@@ -1,0 +1,327 @@
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+body {
+      font-family: Arial, sans-serif;
+      width: 210mm;
+      margin: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    .no-border td,
+    .no-border th {
+      border: none;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      font-size: 14px;
+    }
+
+    .button-group {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    @media print {
+      .button-group {
+        display: none;
+      }
+
+      input,
+      textarea {
+        border: none;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* 
+new css */
+    .contact-info {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .contact-item label {
+      font-weight: bold;
+      margin-right: 5px;
+
+    }
+
+    .contact-item input {
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    /* bill to person */
+    .bill-to-section strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .bill-to-name-input {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      /* Space between Bill To: [Input] and the next line */
+    }
+
+    .bill-to-name-input label {
+      width: 60px;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    .bill-to-name-input input {
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    .bill-to-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .bill-to-item {
+      display: flex;
+      align-items: center;
+    }
+
+
+    /* invoice no. and date */
+    .invoice-details-container {
+      width: 35%;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    .invoice-header {
+      display: flex;
+      /* Arrange labels horizontally */
+      justify-content: space-between;
+      /* Distribute space evenly between items */
+      margin-bottom: 5px;
+      /* Space between the labels and the inputs */
+    }
+
+    .invoice-inputs {
+      display: flex;
+      /* Arrange inputs horizontally */
+      justify-content: space-between;
+      /* Distribute space evenly between items */
+    }
+
+    .invoice-item {
+      display: flex;
+      flex-direction: column;
+      /* Stack label and input vertically within each item */
+      align-items: flex-start;
+      /* Align text and input to the left */
+    }
+
+    .invoice-item input {
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    /* Basic styling for the labels */
+    .invoice-item label {
+      font-weight: bold;
+      margin-bottom: 3px;
+      /* Space between label and its input */
+    }
+
+    /* Main container div */
+    .container {
+      display: flex;
+      /* Use Flexbox to arrange children horizontally */
+      width: 100%;
+      /* The container takes full width of its parent */
+      max-width: 800px;
+      /* Optional: Set a max-width for better readability on large screens */
+      margin: 10px auto;
+      /* Center the container on the page */
+      border: 2px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      /* Ensures rounded corners apply to children */
+    }
+
+    /* Child div 1 (60% width) */
+    .left-div {
+      flex: 4;
+      background-color: #e0f7fa;
+      padding: 10px;
+      box-sizing: border-box;
+      border-right: 1px solid #ccc;
+    }
+
+    /* Child div 2 (40% width) */
+    .right-div {
+      flex: 2;
+      background-color: #fff3e0;
+      /* Light orange */
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+        /* Stack divs vertically on small screens */
+      }
+
+      .left-div,
+      .right-div {
+        flex-basis: auto;
+        /* Reset flex-basis when stacking */
+        width: 100%;
+        /* Take full width when stacked */
+        border-right: none;
+        /* Remove right border when stacked */
+        border-bottom: 1px solid #ccc;
+        /* Add bottom border for separation */
+      }
+
+      .right-div {
+        border-bottom: none;
+        /* No bottom border for the last stacked item */
+      }
+    }
+
+    .bill-to-address {
+      margin-bottom: 10px;
+    }
+
+    textarea.item {
+      width: 300px;
+      /* 🔄 tripled from 200px */
+      height: 150px;
+    }
+
+    input.qty {
+      width: 20px;
+      /* 🔽 reduced width */
+    }
+
+    input.gst {
+      width: 50px;
+    }
+
+    input.hsn,
+    input.rate,
+    input.tax,
+    input.amount {
+      width: 65px;
+    }
+
+
+    /* add row button  */
+    button {
+      padding: 4px 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    tfoot button {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* item list */
+    .item-details {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      row-gap: 4px;
+      column-gap: 8px;
+      font-size: 14px;
+    }
+
+    .item-details input {
+      width: 230px;
+      padding: 2px 4px;
+
+
+    }
+
+    .item-details span {
+      display: flex;
+      align-items: centers;
+      width: 80px;
+      height: 30px;
+
+    }
+
+    /* toast */
+    #toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4d4d;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 9999;
+  animation: fadeInOut 1s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; bottom: 10px; }
+  30% { opacity: 1; bottom: 20px; }
+  100% { opacity: 1; }
+}

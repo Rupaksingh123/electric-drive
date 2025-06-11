@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+
+     <!-- https://script.google.com/macros/s/AKfycbw4XGZHhQTwSUQ3eoflrQ8Hb8ZBr4OuuOksl0IIb7_s2ki79FnbZRrdbsQjAA4hVdqRDg/exec -->
+
+  <div class="button-group">
+    <!-- <button onclick="saveInvoice()">Save</button> -->
+    <button id="saveBtn">Save</button>
+
+    <button onclick="print()">Print</button>
+    <button  id="getAll">Get</button>
+  </div>
+
+  <h2 style="text-align:center">TAX INVOICE</h2>
+  <p style="text-align:center">ORIGINAL FOR RECIPIENT</p>
+
+  <div class="container">
+    <div class="left-div">
+
+      <strong>ELECTRIC DRIVE</strong><br>
+      <label id="companyAddress" style="font-size: 13px;">NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR
+        SHARIF, NALANDA, 803118</label>
+      <div class="contact-info">
+
+        <div class="contact-item">
+          <label for="mobile">Mobile:</label>
+          <label for="mobile">8825148565</label>
+          <!-- <input id="mobile" value="8825148565"> -->
+        </div>
+        <div class="contact-item">
+          <label for="email">Email:</label>
+          <label id="email">evelectricdrive@gmail.com</label>
+        </div>
+        <div class="contact-item">
+          <label for="pan">PAN Number:</label>
+          <label for="pan">KHYPD2397L</label>
+          <!-- <input id="pan" value="KHYPD2397L"> -->
+        </div>
+        <div class="contact-item">
+          <label for="gstin">GSTIN:</label>
+          <label for="gstin">10KHYPD2397L1ZO</label>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="right-div">
+
+      <div class="invoice-header">
+        <div class="invoice-item">
+          <label for="invoiceNumber">No. Invoice:</label>
+        </div>
+        <div class="invoice-item">
+          <label for="invoiceDate">Date:</label>
+        </div>
+      </div>
+      <div class="invoice-inputs">
+        <div class="invoice-item">
+          <input id="invoiceNumber" value="ED/25-26/-122">
+          <button onclick="fetchByInvoice()">Get By Invoice</button>
+        </div>
+        <div class="invoice-item">
+          <input type="date" id="invoiceDate" value="2025-05-30">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="left-div">
+
+      <div class="contact-item">
+        <label style="width: 65px;">Bill To: </label>
+        <textarea id="bill-to-address" style="width: 100%;"></textarea>
+
+      </div>
+      <div class="contact-info">
+
+
+        <div class="contact-item">
+          <label>Mobile:</label>
+          <input id="bill-mobile" type="Number" value="" style="width:120px;">
+        </div>
+
+        <div class="contact-item">
+          <label for="email">Email:</label>
+          <input id="bill-email" value="">
+        </div>
+        <div class="contact-item">
+          <label>PAN No.:</label>
+          <input id="bill-pan" value="" style="width:130px;">
+
+        </div>
+
+        <div class="contact-item">
+          <label style="width:65px;">Aadhar :</label>
+          <input id="bill-aadhar" value="" style="width:150px;">
+
+        </div>
+
+      </div>
+    </div>
+    <div class="right-div">
+      <h2>Right Section (40%)</h2>
+
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+
+        <th>Item</th>
+        <th>HSN</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>GST %</th>
+        <th>TAX</th>
+
+        <th>Amount</th>
+
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>1</td>
+
+
+        <td>
+          <div class="item-details">
+            <span>Model No:</span> <input type="text" id="model-no">
+            <span>Chassis No:</span> <input type="text" id="chassis-no">
+            <span>Motor No:</span> <input type="text" id="motor-no">
+            <span>Battery No:</span> <input type="text" id="battery-no">
+
+          </div>
+        </td>
+
+
+
+        <td><input class="hsn" id="hsn" value="87116020"></td>
+        <td><input class="qty" id="qty" value="1" oninput="recalculate(this)"></td>
+        <td><input class="rate" id="rate" value="42857.14" oninput="recalculate(this)"></td>
+        <td><input class="gst" id="gst" value="5" oninput="recalculate(this)"></td>
+        <td><input class="tax" id="tax" value="0.00" readonly></td>
+        <td><input class="amount" id="amount" value="0.00" readonly></td>
+      </tr>
+
+    </tbody>
+    <tfoot>
+      <tr>
+
+        <td colspan="7" style="text-align:right">Grand Total:</td>
+        <td><input id="grandTotal" value="0.0" readonly></td>
+
+      </tr>
+
+      <tr>
+        <td colspan="7" style="text-align:right">Received Amount:</td>
+        <td><input id="receivedAmount" value="0.0" oninput="updateBalance()"></td>
+
+      </tr>
+      <tr>
+        <td colspan="7" style="text-align:right">Balance Amount:</td>
+        <td><input id="balanceAmount" value="0.0" readonly></td>
+
+      </tr>
+
+    </tfoot>
+
+  </table>
+
+  <table>
+    <tr>
+      <td rowspan="2">HSN/SAC</td>
+      <td rowspan="2">Taxable Value</td>
+      <td colspan="2">CGST</td>
+      <td colspan="2">SGST</td>
+      <td rowspan="2">Total Tax Amount</td>
+    </tr>
+    <tr>
+      <td>Rate</td>
+      <td>Amount</td>
+      <td>Rate</td>
+      <td>Amount</td>
+    </tr>
+    <tr>
+      <td><input value="87116020"></td>
+      <td><input id="taxable"></td>
+      <td><input id="cgst-rate" value="2.5%"></td>
+      <td><input id="cgst"></td>
+      <td><input id="sgst-rate" value="2.5%"></td>
+      <td><input id="sgst"></td>
+      <td><input id="taxTotal"></td>
+    </tr>
+
+  </table>
+
+  <p style="display: flex; margin: 0px; ">
+    <strong>Total Amount (in words):</strong>
+    <label id="inWords" readonly style="flex: 1;align-items: center; display: flex;  "></label>
+  </p>
+
+  <table>
+    <tr>
+      <td>
+        <strong>Bank Details</strong><br>
+        Name: ELECTRIC DRIVE<br>
+        IFSC Code: KKBK0005661<br>
+        Account No: 5448825666<br>
+        Bank: Central Bank of India, Kisan College BRANCH
+      </td>
+      <td>
+        <strong>Payment QR Code</strong><br>
+        UPI ID: kumarvishvishal23@ybl<br>
+        <img src="qr_placeholder.png" width="100">
+      </td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td>
+        <strong>Terms and Conditions:</strong><br>
+        1. Goods once sold will not be taken back or exchanged<br>
+        2. All disputes are subject to NALANDA jurisdiction only
+      </td>
+      <td>
+        <p>Authorised Signatory<br><strong>ELECTRIC DRIVE</strong></p>
+      </td>
+    </tr>
+  </table>
+
+<div id="toast" style="display:none;"></div>
+
+
+  </body>
+</html>
