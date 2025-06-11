@@ -89,6 +89,8 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 });
 
 document.getElementById("getAll").addEventListener("click", getAllInvoices);
+document.getElementById("getByInvoice").addEventListener("click", fetchByInvoice);
+
     //  https://script.google.com/macros/s/AKfycbzHvwNyP_yB8MdEI3rEA8T__0RI-EdIJMXVjjg3jxhbgosftF8t3sHnnqJKvOGo8E9GjA/exec
 
 //     function saveInvoice() {
