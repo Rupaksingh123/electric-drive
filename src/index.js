@@ -313,6 +313,7 @@ function fetchByInvoice() {
 
 
 function getAllInvoices() {
+  console.log("in get All records");
     const url = "https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1kLny_sqbNzgCqgrmhVP1ptJcD_3RmBqHSDkOg/exec?mode=allrecords";
 
     fetch(url)
