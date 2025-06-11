@@ -385,6 +385,7 @@ fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1k
 
 
     function recalculate(input) {
+      console.log("in recalculate : "+ input);
       const row = input.closest('tr');
       const qty = parseFloat(row.querySelector('.qty').value) || 0;
       const rate = parseFloat(row.querySelector('.rate').value) || 0;
