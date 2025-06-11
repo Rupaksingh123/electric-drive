@@ -297,6 +297,7 @@ function saveInvoice() {
 
 // fetchInvoice("ED/25-26/-127");
 function fetchByInvoice() {
+  console.log("in fetcByInvoice");
   let invoiceNumber = document.getElementById("invoiceNumber").value;
   console.log("Fetched invoice invoiceNumber :", invoiceNumber);
   fetch(`https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1kLny_sqbNzgCqgrmhVP1ptJcD_3RmBqHSDkOg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
