@@ -1,9 +1,9 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import React, { useState } from 'react';
 
 const root = ReactDOM.createRoot(document.getElementById("details"));
 root.render(<App />);
@@ -225,6 +225,7 @@ document.getElementById("getByInvoice").addEventListener("click", fetchByInvoice
 //       alert('Invoice saved locally.');
 //     }
 
+//WORKING
 function saveInvoice() {
   const invoiceData = {
     companyAddress: "NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118",
@@ -239,10 +240,13 @@ function saveInvoice() {
     billPan: document.getElementById('bill-pan').value,
     billEmail: document.getElementById('bill-email').value,
     billAadhar: document.getElementById('bill-aadhar').value,
-    modelNo: document.getElementById('model-no').value,
-    ChassisNo: document.getElementById('chassis-no').value,
-    MotorNo: document.getElementById('motor-no').value,
-    BatteryNo: document.getElementById('battery-no').value,
+
+    
+
+    modelNo: document.getElementById('modelNo').value,
+    ChassisNo: document.getElementById('ChassisNo').value,
+    MotorNo: document.getElementById('MotorNo').value,
+    BatteryNo: document.getElementById('BatteryNo').value,
     hsn: document.getElementById('hsn').value,
     qty: document.getElementById('qty').value,
     rate: document.getElementById('rate').value,
@@ -251,6 +255,8 @@ function saveInvoice() {
     amount: document.getElementById('amount').value
   };
 
+
+  
   console.log(invoiceData);
   localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
@@ -303,6 +309,8 @@ function saveInvoice() {
 
   alert('Invoice saved locally.');
 }
+
+
 
 // fetchInvoice("ED/25-26/-127");
 function fetchByInvoice() {
@@ -393,33 +401,33 @@ fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1k
 }
 
 
-    function recalculate(input) {
-      console.log("in recalculate : "+ input);
-      const row = input.closest('tr');
-      const qty = parseFloat(row.querySelector('.qty').value) || 0;
-      const rate = parseFloat(row.querySelector('.rate').value) || 0;
-      const gstPercent = parseFloat(row.querySelector('.gst').value) || 0;
-      const gsthalfrate = gstPercent / 2;
-      const baseAmount = qty * rate;
-      const halfGST = (baseAmount * (gstPercent / 2)) / 100;
-      console.log("half gst " + halfGST + " , Gst %" + (gstPercent / 2) + " value " + gsthalfrate);
-      const tax = (baseAmount * gstPercent) / 100;
-      const amount = baseAmount + tax;
+    // function recalculate(input) {
+    //   console.log("in recalculate : "+ input);
+    //   const row = input.closest('tr');
+    //   const qty = parseFloat(row.querySelector('.qty').value) || 0;
+    //   const rate = parseFloat(row.querySelector('.rate').value) || 0;
+    //   const gstPercent = parseFloat(row.querySelector('.gst').value) || 0;
+    //   const gsthalfrate = gstPercent / 2;
+    //   const baseAmount = qty * rate;
+    //   const halfGST = (baseAmount * (gstPercent / 2)) / 100;
+    //   console.log("half gst " + halfGST + " , Gst %" + (gstPercent / 2) + " value " + gsthalfrate);
+    //   const tax = (baseAmount * gstPercent) / 100;
+    //   const amount = baseAmount + tax;
 
-      row.querySelector('.tax').value = tax.toFixed(2);
-      row.querySelector('.amount').value = amount.toFixed(2);
+    //   row.querySelector('.tax').value = tax.toFixed(2);
+    //   row.querySelector('.amount').value = amount.toFixed(2);
 
-      //below tax fields  based on above
-      document.getElementById('taxable').value = baseAmount.toFixed(2);
-      document.getElementById('cgst').value = halfGST.toFixed(2);
-      document.getElementById('sgst').value = halfGST.toFixed(2);
-      document.getElementById('taxTotal').value = tax.toFixed(2);
+    //   //below tax fields  based on above
+    //   document.getElementById('taxable').value = baseAmount.toFixed(2);
+    //   document.getElementById('cgst').value = halfGST.toFixed(2);
+    //   document.getElementById('sgst').value = halfGST.toFixed(2);
+    //   document.getElementById('taxTotal').value = tax.toFixed(2);
 
 
-      document.getElementById('cgst-rate').value = gsthalfrate;
-      document.getElementById('sgst-rate').value = gsthalfrate;
-      updateGrandTotal();
-    }
+    //   document.getElementById('cgst-rate').value = gsthalfrate;
+    //   document.getElementById('sgst-rate').value = gsthalfrate;
+    //   updateGrandTotal();
+    // }
 
     function updateRowNumbers() {
       const rows = document.querySelectorAll("#itemTable tbody tr");
@@ -430,28 +438,28 @@ fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1k
 
 
     //updating
-    function updateGrandTotal() {
-      const amounts = document.querySelectorAll('.amount');
-      let total = 0;
-      amounts.forEach(input => {
-        total += parseFloat(input.value) || 0;
-      });
-      document.getElementById('grandTotal').value = total.toFixed(2);
-      updateBalance(); // 🔄 Update balance when grand total changes
-      console.log("amount ;" + amounts + " , total" + total);
-      document.getElementById('inWords').innerText = numberToWords(total);
+    // function updateGrandTotal() {
+    //   const amounts = document.querySelectorAll('.amount');
+    //   let total = 0;
+    //   amounts.forEach(input => {
+    //     total += parseFloat(input.value) || 0;
+    //   });
+    //   document.getElementById('grandTotal').value = total.toFixed(2);
+    //   updateBalance(); // 🔄 Update balance when grand total changes
+    //   console.log("amount ;" + amounts + " , total" + total);
+    //   document.getElementById('inWords').innerText = numberToWords(total);
 
-    }
+    // }
 
 
-    function updateBalance() {
-      console.log()
-      const total = parseFloat(document.getElementById('grandTotal').value) || 0;
-      const received = parseFloat(document.getElementById('receivedAmount').value) || 0;
-      const balance = total - received;
-      console.log("total : " + total + " , recived " + received + " , bala : " + balance);
-      document.getElementById('balanceAmount').value = balance.toFixed(2);
-    }
+    // function updateBalance() {
+    //   console.log()
+    //   const total = parseFloat(document.getElementById('grandTotal').value) || 0;
+    //   const received = parseFloat(document.getElementById('receivedAmount').value) || 0;
+    //   const balance = total - received;
+    //   console.log("total : " + total + " , recived " + received + " , bala : " + balance);
+    //   document.getElementById('balanceAmount').value = balance.toFixed(2);
+    // }
 
     //convert grandamout in word
     function numberToWords(num) {
