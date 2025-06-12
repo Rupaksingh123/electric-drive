@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import RateInput from './RateInput'; // ⬅️ Import your new component
+import RateInput from './Input/RateInput';
+// ⬅️ Import your new component
 
 function App() {
   // return (

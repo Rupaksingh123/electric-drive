@@ -1,5 +1,3 @@
-// RateInput.js
-import React from 'react';
 import React, { useState } from 'react';
 
 function RateInput() {
@@ -9,16 +7,14 @@ function RateInput() {
   const [tax, setTax] = useState(0);
   const [amount, setAmount] = useState(0);
 
-  const recalculate = () => {
-    const baseAmount = qty * rate;
-    const gstPercent = gst;
-    const halfGST = (baseAmount * (gstPercent / 2)) / 100;
+  const recalculate = (newQty, newRate, newGst) => {
+    const baseAmount = newQty * newRate;
+    const gstPercent = newGst;
     const totalTax = (baseAmount * gstPercent) / 100;
     const totalAmount = baseAmount + totalTax;
 
     setTax(totalTax.toFixed(2));
     setAmount(totalAmount.toFixed(2));
-    // You can also update grand total or other fields here
   };
 
   return (
@@ -45,8 +41,9 @@ function RateInput() {
               type="number"
               value={qty}
               onChange={(e) => {
-                setQty(Number(e.target.value));
-                recalculate();
+                const val = Number(e.target.value);
+                setQty(val);
+                recalculate(val, rate, gst);
               }}
             />
           </td>
@@ -58,8 +55,9 @@ function RateInput() {
               type="number"
               value={rate}
               onChange={(e) => {
-                setRate(Number(e.target.value));
-                recalculate();
+                const val = Number(e.target.value);
+                setRate(val);
+                recalculate(qty, val, gst);
               }}
             />
           </td>
@@ -71,8 +69,9 @@ function RateInput() {
               type="number"
               value={gst}
               onChange={(e) => {
-                setGst(Number(e.target.value));
-                recalculate();
+                const val = Number(e.target.value);
+                setGst(val);
+                recalculate(qty, rate, val);
               }}
             />
           </td>
@@ -85,4 +84,4 @@ function RateInput() {
   );
 }
 
-export default App;
+export default RateInput;
