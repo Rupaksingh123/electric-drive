@@ -13,8 +13,8 @@ function RateInput() {
     const totalTax = (baseAmount * gstPercent) / 100;
     const totalAmount = baseAmount + totalTax;
 
-    setTax(totalTax.toFixed(2));
-    setAmount(totalAmount.toFixed(2));
+    setTax(totalTax.toFixed(1));
+    setAmount(totalAmount.toFixed(1));
   };
 
   const handleQtyChange = (e) => {
@@ -72,7 +72,7 @@ function RateInput() {
               type="number"
               value={qty}
               onChange={handleQtyChange}
-              className="qty"
+              className="qty" 
             />
           </td>
           <td>

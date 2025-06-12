@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+/* Disable number input spinners for Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Disable number input spinners for Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
