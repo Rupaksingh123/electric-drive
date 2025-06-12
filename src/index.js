@@ -90,7 +90,8 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 
 document.getElementById("getAll").addEventListener("click", getAllInvoices);
 document.getElementById("getByInvoice").addEventListener("click", fetchByInvoice);
- document.getElementById("qty").addEventListener("change", function () {
+document.getElementById("qty").addEventListener("change", function () {
+  console.log("in qty");
     recalculate();
   });
 
