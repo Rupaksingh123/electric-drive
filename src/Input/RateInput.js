@@ -157,7 +157,7 @@ import React, { useState, useEffect } from 'react';
 function RateInput() {
   const [qty, setQty] = useState(1);
   const [rate, setRate] = useState(1);
-  const [gst, setGst] = useState(0);
+  const [gst, setGst] = useState(5);
   const [tax, setTax] = useState(0);
   const [amount, setAmount] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -232,7 +232,7 @@ function RateInput() {
               />
             </td>
             <td>
-              <input id="rate"
+              {/* <input id="rate"
                 type="number"
                 value={rate}
                 onChange={(e) => {
@@ -240,10 +240,27 @@ function RateInput() {
                   setRate(val);
                   handleCalc(qty, val, gst);
                 }}
-              />
+              /> */}
+              <input
+  id="rate"
+  type="number"
+  value={rate === 0 ? '' : rate}
+  onChange={(e) => {
+    const val = e.target.value;
+    if (val === '') {
+      setRate(0); // or setRate('') if you want to handle it as empty
+      handleCalc(qty, 0, gst);
+    } else {
+      const num = Number(val);
+      setRate(num);
+      handleCalc(qty, num, gst);
+    }
+  }}
+/>
+
             </td>
             <td>
-              <input id="gst"
+              {/* <input id="gst"
                 type="number"
                 value={gst}
                 onChange={(e) => {
@@ -251,7 +268,24 @@ function RateInput() {
                   setGst(val);
                   handleCalc(qty, rate, val);
                 }}
-              />
+              /> */}
+              <input
+  id="gst"
+  type="number"
+  value={gst === 0 ? '' : gst}
+  onChange={(e) => {
+    const val = e.target.value;
+    if (val === '') {
+      setGst(0); // Optionally set to null or '' if you want to handle blank differently
+      handleCalc(qty, rate, 0);
+    } else {
+      const num = Number(val);
+      setGst(num);
+      handleCalc(qty, rate, num);
+    }
+  }}
+/>
+
             </td>
             <td><input id="tax" type="text" value={tax} readOnly /></td>
             <td><input id="amount" type="text" value={amount} readOnly /></td>
