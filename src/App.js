@@ -26,12 +26,27 @@ function App() {
 
   
    return (
+    
     <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Details</th>
+          <th>HSN</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>GST %</th>
+          <th>Tax</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
       <tbody>
-        <RateInput /> {/* ⬅️ Use your custom component */}
+        <RateInput />
+        {/* Add more <InvoiceRow /> if needed */}
       </tbody>
     </table>
   );
+  
 }
 
 export default App;
