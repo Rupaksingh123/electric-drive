@@ -180,7 +180,11 @@
 
 
         <td><input class="hsn" id="hsn" value="87116020"></td>
-        <td><input class="qty" id="qty" value="1" onchange={recalculate()}></td>
+        <td><input class="qty" id="qty" value="1"></td>
+
+        <!-- <td><input className="qty" id="qty" value={qty} onChange={recalculate} type="number"/></td> -->
+
+
         <td><input class="rate" id="rate" value="42857.14" oninput="recalculate(this)"></td>
         <td><input class="gst" id="gst" value="5" oninput="recalculate(this)"></td>
         <td><input class="tax" id="tax" value="0.00" readonly></td>
