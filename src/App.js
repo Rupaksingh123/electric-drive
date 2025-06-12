@@ -27,11 +27,26 @@ function App() {
 
   
    return (
-    
-    <table>
-       <RateInput />
-    
-    </table>
+     <RateInput />
+    // <table>
+      
+    //   {/* <thead>
+    //     <tr>
+    //       <th>#</th>
+    //       <th>Details</th>
+    //       <th>HSN</th>
+    //       <th>Qty</th>
+    //       <th>Rate</th>
+    //       <th>GST %</th>
+    //       <th>Tax</th>
+    //       <th>Amount</th>
+    //     </tr>
+    //   </thead> */}
+    //   <tbody>
+       
+    //     {/* Add more <InvoiceRow /> if needed */}
+    //   </tbody>
+    // </table>
   );
   
 }
