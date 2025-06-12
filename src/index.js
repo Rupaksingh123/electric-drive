@@ -4,12 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+
+const root = ReactDOM.createRoot(document.getElementById("details"));
+root.render(<App />);
+
+// const root = ReactDOM.createRoot(document.getElementById('root'));
+// root.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
@@ -90,10 +94,10 @@ document.getElementById("saveBtn").addEventListener("click", function () {
 
 document.getElementById("getAll").addEventListener("click", getAllInvoices);
 document.getElementById("getByInvoice").addEventListener("click", fetchByInvoice);
-document.getElementById("qty").addEventListener("change", function () {
-  console.log("in qty");
-    recalculate();
-  });
+// document.getElementById("qty").addEventListener("change", function () {
+//   console.log("in qty");
+//     recalculate();
+//   });
 
 
     //  https://script.google.com/macros/s/AKfycbzHvwNyP_yB8MdEI3rEA8T__0RI-EdIJMXVjjg3jxhbgosftF8t3sHnnqJKvOGo8E9GjA/exec

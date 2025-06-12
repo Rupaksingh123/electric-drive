@@ -17,67 +17,82 @@ function RateInput() {
     setAmount(totalAmount.toFixed(2));
   };
 
+  const handleQtyChange = (e) => {
+    const val = Number(e.target.value);
+    setQty(val);
+    recalculate(val, rate, gst);
+  };
+
+  const handleRateChange = (e) => {
+    const val = Number(e.target.value);
+    setRate(val);
+    recalculate(qty, val, gst);
+  };
+
+  const handleGstChange = (e) => {
+    const val = Number(e.target.value);
+    setGst(val);
+    recalculate(qty, rate, val);
+  };
+
   return (
-    <table>
+    <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>HSN</th>
+          <th>Qty</th>
+          <th>Rate</th>
+          <th>GST %</th>
+          <th>TAX</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
       <tbody>
         <tr>
           <td>1</td>
-
           <td>
-            <div className="item-details">
+            <div className="item-details" style={{width: '230px'}}>
               <span>Model No:</span> <input type="text" id="model-no" />
               <span>Chassis No:</span> <input type="text" id="chassis-no" />
               <span>Motor No:</span> <input type="text" id="motor-no" />
               <span>Battery No:</span> <input type="text" id="battery-no" />
             </div>
           </td>
+          
 
-          <td><input className="hsn" id="hsn" value="87116020" readOnly /></td>
 
+
+
+
+          <td><input className="hsn" value="87116020" readOnly /></td>
           <td>
             <input
-              className="qty"
-              id="qty"
               type="number"
               value={qty}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setQty(val);
-                recalculate(val, rate, gst);
-              }}
+              onChange={handleQtyChange}
+              className="qty"
             />
           </td>
-
           <td>
             <input
-              className="rate"
-              id="rate"
               type="number"
               value={rate}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setRate(val);
-                recalculate(qty, val, gst);
-              }}
+              onChange={handleRateChange}
+              className="rate"
             />
           </td>
-
           <td>
             <input
-              className="gst"
-              id="gst"
               type="number"
               value={gst}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                setGst(val);
-                recalculate(qty, rate, val);
-              }}
+              onChange={handleGstChange}
+              className="gst"
             />
           </td>
-
-          <td><input className="tax" id="tax" value={tax} readOnly /></td>
-          <td><input className="amount" id="amount" value={amount} readOnly /></td>
+          <td><input type="text" value={tax} readOnly className="tax" /></td>
+          <td><input type="text" value={amount} readOnly className="amount" /></td>
         </tr>
       </tbody>
     </table>

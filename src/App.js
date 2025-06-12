@@ -29,7 +29,7 @@ function App() {
    return (
     
     <table>
-      <thead>
+      {/* <thead>
         <tr>
           <th>#</th>
           <th>Details</th>
@@ -40,7 +40,7 @@ function App() {
           <th>Tax</th>
           <th>Amount</th>
         </tr>
-      </thead>
+      </thead> */}
       <tbody>
         <RateInput />
         {/* Add more <InvoiceRow /> if needed */}

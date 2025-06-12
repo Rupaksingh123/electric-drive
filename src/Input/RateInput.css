@@ -1,0 +1,21 @@
+    textarea.item {
+      width: 300px;
+      /* 🔄 tripled from 200px */
+      height: 150px;
+    }
+
+    input.qty {
+      width: 20px;
+      /* 🔽 reduced width */
+    }
+
+    input.gst {
+      width: 50px;
+    }
+
+    input.hsn,
+    input.rate,
+    input.tax,
+    input.amount {
+      width: 65px;
+    }
