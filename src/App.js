@@ -1,54 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
-import RateInput from './Input/RateInput';
-// ⬅️ Import your new component
+
+import React, { useEffect, useState } from 'react';
+
+import AllRecordsTable from './AllRecord/AllRecordsTable';
+import Homepage from './Home/HomePage';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     {/* <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //         Learn React
-  //       </a>
-  //     </header> */}
-  //   </div>
+  const [toast, setToast] = useState('');
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-    
-  // );
+  useEffect(() => {
+    const updateConnection = () => {
+      setIsOnline(navigator.onLine);
+      if (!navigator.onLine) setToast("❌ You are offline");
+      else {
+        setToast("✅ Internet is back");
+        setTimeout(() => setToast(''), 2000);
+      }
+    };
 
-  
-   return (
-     <RateInput />
-    // <table>
-      
-    //   {/* <thead>
-    //     <tr>
-    //       <th>#</th>
-    //       <th>Details</th>
-    //       <th>HSN</th>
-    //       <th>Qty</th>
-    //       <th>Rate</th>
-    //       <th>GST %</th>
-    //       <th>Tax</th>
-    //       <th>Amount</th>
-    //     </tr>
-    //   </thead> */}
-    //   <tbody>
-       
-    //     {/* Add more <InvoiceRow /> if needed */}
-    //   </tbody>
-    // </table>
+    window.addEventListener("online", updateConnection);
+    window.addEventListener("offline", updateConnection);
+    updateConnection(); // on load
+
+    return () => {
+      window.removeEventListener("online", updateConnection);
+      window.removeEventListener("offline", updateConnection);
+    };
+  }, []);
+
+
+
+ return (
+    <Router>
+      <div className="p-4 space-x-4">
+        {/* Navigation Links */}
+        <Link to="/" className="text-blue-600">Home</Link>
+        <Link to="/all-records" className="text-blue-600">All Records</Link>
+      </div>
+
+      {/* Toast Message */}
+     {toast && <div id="toast">{toast}</div>}
+
+      {/* Route Views */}
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/all-records" element={<AllRecordsTable />} />
+      </Routes>
+    </Router>
   );
-  
 }
-
 export default App;
