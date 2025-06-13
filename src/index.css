@@ -14,8 +14,9 @@ code {
 
 body {
       font-family: Arial, sans-serif;
-      width: 210mm;
-      margin: auto;
+      /* width: 210mm; */
+      max-width: 837px;
+      margin: 0px;
       padding: 20px;
       box-sizing: border-box;
     }
@@ -57,7 +58,13 @@ body {
       font-size: 16px;
     }
 
+
+   
+
     @media print {
+       body {
+    zoom: 90%; /* Adjust the scale here (e.g., 90% of actual size) */
+  }
       .button-group {
         display: none;
       }

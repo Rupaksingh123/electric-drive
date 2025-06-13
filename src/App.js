@@ -40,7 +40,7 @@ function App() {
       </div>
 
       {/* Toast Message */}
-     {toast && <div id="toast">{toast}</div>}
+     {toast && <div id="toast" className="no-print">{toast}</div>}
 
       {/* Route Views */}
       <Routes>

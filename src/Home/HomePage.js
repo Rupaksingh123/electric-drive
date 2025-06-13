@@ -96,6 +96,20 @@ const saveInvoice = () => {
 
 };
 
+//helper for fetchLatestInvoiceNumber function
+function incrementInvoiceNumber(invoice) {
+ const match = invoice.match(/(.*\/-)(\d+)$/);
+
+  if (!match) return invoice;
+
+  const prefix = match[1]; // "ED/25-26/-"
+  const number = parseInt(match[2]);
+
+  const incremented = number + 1;
+
+  return `${prefix}${incremented}`;
+}
+
 const fetchLatestInvoiceNumber = () => {
   console.log("Fetching latest invoice number...");
   fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1kLny_sqbNzgCqgrmhVP1ptJcD_3RmBqHSDkOg/exec?mode=latest")
@@ -106,6 +120,9 @@ const fetchLatestInvoiceNumber = () => {
   .then(data => {
     if (data.success) {
       console.log("Latest Invoice:", data.latestInvoice);
+      const nextInvoice = incrementInvoiceNumber(data.latestInvoice);
+
+console.log(nextInvoice);
     } else {
       console.warn("No invoice found.");
     }
@@ -141,7 +158,7 @@ const fetchByInvoice = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{maxWidth:'800px'}}>
       <div className="button-group">
         <button id="saveBtn">Save</button>
         <button onClick={() => window.print()}>Print</button>
