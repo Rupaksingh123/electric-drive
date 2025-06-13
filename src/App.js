@@ -35,8 +35,8 @@ function App() {
     <Router>
       <div className="p-4 space-x-4">
         {/* Navigation Links */}
-        <Link to="/" className="text-blue-600">Home</Link>
-        <Link to="/all-records" className="text-blue-600">All Records</Link>
+        <Link to="/" className="text-blue-600" className="no-print">Home</Link>
+        <Link to="/all-records" className="text-blue-600" className="no-print" >All Records</Link>
       </div>
 
       {/* Toast Message */}

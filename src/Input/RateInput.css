@@ -21,4 +21,23 @@
     }
 
 
+    /* try */
+
+    .form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  width: 120px; /* Adjust width as needed */
+  font-weight: bold;
+}
+
+.form-row input {
+  flex: 1;
+      width: 166px;
+}
+
+
     

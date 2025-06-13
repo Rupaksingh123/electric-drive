@@ -201,7 +201,7 @@ function RateInput() {
         <thead>
           <tr>
             <th>#</th>
-            <th style={{ width: '25%' }}>Item</th>
+            <th style={{ width: '35%' }}>Item</th>
             <th>HSN</th>
             <th>Qty</th>
             <th>Rate</th>
@@ -214,8 +214,18 @@ function RateInput() {
           <tr>
             <td>1</td>
             <td>
-              Model No: <input id="modelNo" type="text" /><br />
-              Chassis No: <input id="ChassisNo" type="text" /><br />
+              <div class="form-row">
+  <label for="modelNo">Model No:</label>
+  <input id="modelNo" type="text" />
+</div>
+
+<div class="form-row">
+  <label for="ChassisNo">Chassis No:</label>
+  <input id="ChassisNo" type="text" />
+</div>
+
+              {/* Model No: <input id="modelNo" type="text" /><br />
+              Chassis No: <input id="ChassisNo" type="text" /><br /> */}
               Motor No: <input id="MotorNo" type="text" /><br />
               Battery No: <input id="BatteryNo" type="text" />
             </td>
