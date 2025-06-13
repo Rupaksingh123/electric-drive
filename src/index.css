@@ -74,7 +74,7 @@ body {
         border: none;
       }
 
-      .no-print {
+      .no-print ,footer{
         display: none !important;
       }
     }

@@ -44,13 +44,14 @@ const saveInvoice = () => {
   console.log(invoiceData);
   localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-  fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1kLny_sqbNzgCqgrmhVP1ptJcD_3RmBqHSDkOg/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbyp3YkUdeHVKlHfsT9c6s5oIhNwgEGramHRwExXsV9uqsyfThLy_29Q_RMIwL6BAGViSg/exec", {
     method: "POST",
     mode: "cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     body: new URLSearchParams({
+      mode:"invoice",
       name: "Rupak",
       gstin: invoiceData.gstin,
       mobile: invoiceData.mobile,
@@ -112,7 +113,7 @@ function incrementInvoiceNumber(invoice) {
 
 const fetchLatestInvoiceNumber = () => {
   console.log("Fetching latest invoice number...");
-  fetch("https://script.google.com/macros/s/AKfycbxOJRcuQ7O8eYHlSZGwukrNXMikcxCc1kLny_sqbNzgCqgrmhVP1ptJcD_3RmBqHSDkOg/exec?mode=latest")
+  fetch("https://script.google.com/macros/s/AKfycbyp3YkUdeHVKlHfsT9c6s5oIhNwgEGramHRwExXsV9uqsyfThLy_29Q_RMIwL6BAGViSg/exec?mode=latest")
   .then(res => {
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return res.json();
