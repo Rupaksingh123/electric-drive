@@ -44,7 +44,7 @@ const saveInvoice = () => {
   console.log(invoiceData);
   localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-  fetch("https://script.google.com/macros/s/AKfycbyp3YkUdeHVKlHfsT9c6s5oIhNwgEGramHRwExXsV9uqsyfThLy_29Q_RMIwL6BAGViSg/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -113,7 +113,7 @@ function incrementInvoiceNumber(invoice) {
 
 const fetchLatestInvoiceNumber = () => {
   console.log("Fetching latest invoice number...");
-  fetch("https://script.google.com/macros/s/AKfycbyp3YkUdeHVKlHfsT9c6s5oIhNwgEGramHRwExXsV9uqsyfThLy_29Q_RMIwL6BAGViSg/exec?mode=latest")
+  fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?mode=latest")
   .then(res => {
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return res.json();
