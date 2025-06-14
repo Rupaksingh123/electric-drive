@@ -4,144 +4,203 @@ import RateInput from "../Input/RateInput";
 const HomePage = () => {
 
   const monitorInternetConnection = () => {
-  window.addEventListener('online', () => alert('Back online'));
-  window.addEventListener('offline', () => alert('You are offline'));
-};
-
-const saveInvoice = () => {
-  console.log("Saving invoice... (implement your logic here)");
-  
-  const invoiceData = {
-    companyAddress: "NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118",
-    gstin: "10KHYPD2397L1ZO",
-    mobile: "8825148565",
-    pan: "KHYPD2397L",
-    email: "evelectricdrive@gmail.com",
-    invoiceNumber: document.getElementById('invoiceNumber').value,
-    invoiceDate: document.getElementById('invoiceDate').value,
-    billTo: document.getElementById('bill-to-address').value,
-    billMobile: document.getElementById('bill-mobile').value,
-    billPan: document.getElementById('bill-pan').value,
-    billEmail: document.getElementById('bill-email').value,
-    billAadhar: document.getElementById('bill-aadhar').value,
-
-    
-
-    modelNo: document.getElementById('modelNo').value,
-    ChassisNo: document.getElementById('ChassisNo').value,
-    MotorNo: document.getElementById('MotorNo').value,
-    BatteryNo: document.getElementById('BatteryNo').value,
-    hsn: document.getElementById('hsn').value,
-    qty: document.getElementById('qty').value,
-    rate: document.getElementById('rate').value,
-    Gst: document.getElementById('gst').value,
-    tax: document.getElementById('tax').value,
-    amount: document.getElementById('amount').value
+    window.addEventListener('online', () => alert('Back online'));
+    window.addEventListener('offline', () => alert('You are offline'));
   };
 
+  const saveInvoice = () => {
+    console.log("Saving invoice... (implement your logic here)");
 
-  
-  console.log(invoiceData);
-  localStorage.setItem('invoice', JSON.stringify(invoiceData));
+    const invoiceData = {
+      companyAddress: "NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118",
+      gstin: "10KHYPD2397L1ZO",
+      mobile: "8825148565",
+      pan: "KHYPD2397L",
+      email: "evelectricdrive@gmail.com",
+      invoiceNumber: document.getElementById('invoiceNumber').value,
+      invoiceDate: document.getElementById('invoiceDate').value,
+      billTo: document.getElementById('bill-to-address').value,
+      billMobile: document.getElementById('bill-mobile').value,
+      billPan: document.getElementById('bill-pan').value,
+      billEmail: document.getElementById('bill-email').value,
+      billAadhar: document.getElementById('bill-aadhar').value,
 
-  fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec", {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams({
-      mode:"invoice",
-      name: "Rupak",
-      gstin: invoiceData.gstin,
-      mobile: invoiceData.mobile,
-      pan: invoiceData.pan,
-      email: invoiceData.email,
-      invoiceNumber: invoiceData.invoiceNumber,
-      invoiceDate: invoiceData.invoiceDate,
-      billTo: invoiceData.billTo,
-      billMobile: invoiceData.billMobile,
-      billPan: invoiceData.billPan,
-      billEmail: invoiceData.billEmail,
-      billAadhar: invoiceData.billAadhar,
-      modelNo: invoiceData.modelNo,
-      ChassisNo: invoiceData.ChassisNo,
-      MotorNo: invoiceData.MotorNo,
-      BatteryNo: invoiceData.BatteryNo,
-      hsn: invoiceData.hsn,
-      qty: invoiceData.qty,
-      rate: invoiceData.rate,
-      Gst: invoiceData.Gst,
-      tax: invoiceData.tax,
-      amount: invoiceData.amount
+
+
+      modelNo: document.getElementById('modelNo').value,
+      ChassisNo: document.getElementById('ChassisNo').value,
+      MotorNo: document.getElementById('MotorNo').value,
+      BatteryNo: document.getElementById('BatteryNo').value,
+      hsn: document.getElementById('hsn').value,
+      qty: document.getElementById('qty').value,
+      rate: document.getElementById('rate').value,
+      Gst: document.getElementById('gst').value,
+      tax: document.getElementById('tax').value,
+      amount: document.getElementById('amount').value
+    };
+
+
+
+    console.log(invoiceData);
+    localStorage.setItem('invoice', JSON.stringify(invoiceData));
+
+    fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        mode: "invoice",
+        name: "Rupak",
+        gstin: invoiceData.gstin,
+        mobile: invoiceData.mobile,
+        pan: invoiceData.pan,
+        email: invoiceData.email,
+        invoiceNumber: invoiceData.invoiceNumber,
+        invoiceDate: invoiceData.invoiceDate,
+        billTo: invoiceData.billTo,
+        billMobile: invoiceData.billMobile,
+        billPan: invoiceData.billPan,
+        billEmail: invoiceData.billEmail,
+        billAadhar: invoiceData.billAadhar,
+        modelNo: invoiceData.modelNo,
+        ChassisNo: invoiceData.ChassisNo,
+        MotorNo: invoiceData.MotorNo,
+        BatteryNo: invoiceData.BatteryNo,
+        hsn: invoiceData.hsn,
+        qty: invoiceData.qty,
+        rate: invoiceData.rate,
+        Gst: invoiceData.Gst,
+        tax: invoiceData.tax,
+        amount: invoiceData.amount
+      })
     })
-  })
-    .then(async (response) => {
-    if (!response.ok) {
-      // Server responded with an HTTP error
-      const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
-    }
-    return response.json(); // or text() depending on your GAS output
-  })
-  .then(data => {
-    console.log("Response from server:", data);
-  })
-     .catch(error => {
-    console.error("Fetch failed:", error.message || error);
-    alert("Fetch Error: " + error.message);
-  });
+      .then(async (response) => {
+        if (!response.ok) {
+          // Server responded with an HTTP error
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        return response.json(); // or text() depending on your GAS output
+      })
+      .then(data => {
+        console.log("Response from server:", data);
+      })
+      .catch(error => {
+        console.error("Fetch failed:", error.message || error);
+        alert("Fetch Error: " + error.message);
+      });
 
-  alert('Invoice saved locally.');
+    alert('Invoice saved locally.');
 
 
-};
+  };
 
-//helper for fetchLatestInvoiceNumber function
-function incrementInvoiceNumber(invoice) {
- const match = invoice.match(/(.*\/-)(\d+)$/);
+  //helper for fetchLatestInvoiceNumber function
+  function incrementInvoiceNumber(invoice) {
+    const match = invoice.match(/(.*\/-)(\d+)$/);
 
-  if (!match) return invoice;
+    if (!match) return invoice;
 
-  const prefix = match[1]; // "ED/25-26/-"
-  const number = parseInt(match[2]);
+    const prefix = match[1]; // "ED/25-26/-"
+    const number = parseInt(match[2]);
 
-  const incremented = number + 1;
+    const incremented = number + 1;
 
-  return `${prefix}${incremented}`;
-}
+    return `${prefix}${incremented}`;
+  }
 
-const fetchLatestInvoiceNumber = () => {
-  console.log("Fetching latest invoice number...");
-  fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?mode=latest")
-  .then(res => {
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    return res.json();
-  })
-  .then(data => {
-    if (data.success) {
-      console.log("Latest Invoice:", data.latestInvoice);
-      const nextInvoice = incrementInvoiceNumber(data.latestInvoice);
+  const fetchLatestInvoiceNumber = () => {
+    console.log("Fetching latest invoice number...");
+    fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?mode=latest")
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        if (data.success) {
+          console.log("Latest Invoice:", data.latestInvoice);
+          const nextInvoice = incrementInvoiceNumber(data.latestInvoice);
 
-console.log(nextInvoice);
-    } else {
-      console.warn("No invoice found.");
-    }
-  })
-  .catch(err => {
-    console.error("Error fetching invoice:", err.message);
-  });
+          document.getElementById('invoiceNumber').value = nextInvoice || "";
 
-};
+          console.log(nextInvoice);
+        } else {
+          console.warn("No invoice found.");
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching invoice:", err.message);
+      });
 
-const getAllInvoices = () => {
-  console.log("Fetching all invoices...");
-};
+  };
 
-const fetchByInvoice = () => {
-  const invoice = document.getElementById("invoiceNumber").value;
-  console.log("Fetch by invoice:", invoice);
-};
+  const getAllInvoices = () => {
+    console.log("Fetching all invoices...");
+  };
+
+  const fetchByInvoice = () => {
+
+
+    console.log("in fetcByInvoice");
+    let invoiceNumber = document.getElementById("getinvoiceNumber").value;
+    console.log("Fetched invoice invoiceNumber :", invoiceNumber);
+    fetch(`https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("Invoice Data:", data.data);
+          const {
+            billTo,
+            billMobile,
+            billPanNo,
+            billEmail,
+            billAadhar,
+            BatteryNo,
+            ChassisNo,
+            Gst, MotorNo,
+            amount, hsn
+            , invoiceDate
+
+            , modelNo
+            , qty
+            , rate
+            , tax
+          } = data.data;
+
+
+
+          // Map values to form fields
+          document.getElementById('invoiceDate').value = invoiceDate || "";
+          document.getElementById('bill-to-address').value = billTo || "";
+          document.getElementById('bill-mobile').value = billMobile || "";
+          document.getElementById('bill-pan').value = billPanNo || "";
+          document.getElementById('bill-email').value = billEmail || "";
+          document.getElementById('bill-aadhar').value = billAadhar || "";
+
+          document.getElementById('modelNo').value = modelNo || "";
+          document.getElementById('ChassisNo').value = ChassisNo || "";
+          document.getElementById('MotorNo').value = MotorNo || "";
+          document.getElementById('BatteryNo').value = BatteryNo || "";
+          document.getElementById('hsn').value = hsn || "";
+          document.getElementById('qty').value = qty || "";
+          document.getElementById('rate').value = rate || "";
+          document.getElementById('gst').value = Gst || "";
+          document.getElementById('tax').value = tax || "";
+          document.getElementById('amount').value = amount || "";
+
+        } else {
+          console.warn("Not found:", data.message);
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching invoice:", err);
+      });
+
+
+
+  };
 
 
   useEffect(() => {
@@ -159,19 +218,35 @@ const fetchByInvoice = () => {
   }, []);
 
   return (
-    <div style={{maxWidth:'800px'}}>
+    <div style={{ maxWidth: '800px' }}>
       <div className="button-group">
         <button id="saveBtn">Save</button>
         <button onClick={() => window.print()}>Print</button>
         <button id="getAll" onClick={getAllInvoices}>Get All records</button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '10px' }}>
-        <h2 style={{ margin: 0 }}>TAX INVOICE</h2>
-        <p style={{ margin: 0, backgroundColor: 'lightgray', padding: '4px 10px', borderRadius: '4px', border: '1px solid #000' }}>
-          ORIGINAL FOR RECIPIENT
-        </p>
+
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h2 style={{ margin: 0 }}>TAX INVOICE</h2>
+          <p style={{ margin: 0, backgroundColor: 'lightgray', padding: '4px 10px', borderRadius: '4px', border: '1px solid #000' }}>
+            ORIGINAL FOR RECIPIENT
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <input
+            id="getinvoiceNumber"
+            defaultValue="ED/25-26/-"
+            style={{ width: '110px', padding: '4px' }}
+          />
+          <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button>
+        </div>
+
+
       </div>
+
 
       {/* Company Info */}
       <div className="container">
@@ -214,7 +289,7 @@ const fetchByInvoice = () => {
           <div className="invoice-inputs">
             <div className="invoice-item">
               <input id="invoiceNumber" defaultValue="ED/25-26/-122" />
-              <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button>
+              {/* <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button> */}
             </div>
             <div className="invoice-item">
               <input type="date" id="invoiceDate" defaultValue="2025-05-30" />

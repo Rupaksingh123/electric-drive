@@ -45,7 +45,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //(maxSessionTime = 15 * 60 * 1000)
-const AutoLogout = (maxSessionTime = 2 * 60 * 1000) => {
+const AutoLogout = (maxSessionTime = 10 * 60 * 1000) => {
   const [timeLeft, setTimeLeft] = useState(null); // ms
   const navigate = useNavigate();
 
