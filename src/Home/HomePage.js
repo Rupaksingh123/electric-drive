@@ -253,13 +253,17 @@ const HomePage = () => {
         <div className="left-div">
           <strong>ELECTRIC DRIVE</strong><br />
           <label id="companyAddress" style={{ fontSize: 13 }}>
-            NEAR VISHAL SUPER MART, KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118
+            NEAR VISHAL SUPER MART, KISAN COLLAGE RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118
           </label>
 
           <div className="contact-info">
             <div className="contact-item">
               <label>Mobile:</label>
-              <label>8825148565</label>
+              <label>9471696619 , 8825148565</label>
+            </div>
+            <div className="contact-item">
+              <label>GSTIN:</label>
+              <label>10KHYPD2397L1ZO</label>
             </div>
             <div className="contact-item">
               <label>Email:</label>
@@ -269,27 +273,31 @@ const HomePage = () => {
               <label>PAN Number:</label>
               <label>KHYPD2397L</label>
             </div>
-            <div className="contact-item">
-              <label>GSTIN:</label>
-              <label>10KHYPD2397L1ZO</label>
-            </div>
+            
           </div>
         </div>
 
         <div className="right-div">
           <div className="invoice-header">
             <div className="invoice-item">
-              <label htmlFor="invoiceNumber">No. Invoice:</label>
+              <label htmlFor="invoiceNumber" style={{  width: "123px"}}>Invoice No. :</label>
             </div>
-            <div className="invoice-item">
-              <label htmlFor="invoiceDate">Date:</label>
-            </div>
-          </div>
-
-          <div className="invoice-inputs">
             <div className="invoice-item">
               <input id="invoiceNumber" defaultValue="ED/25-26/-122" />
               {/* <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button> */}
+            </div>
+            {/* <div className="invoice-item">
+              <label htmlFor="invoiceDate">Date:</label>
+            </div> */}
+          </div>
+
+          <div className="invoice-inputs">
+            {/* <div className="invoice-item">
+              <input id="invoiceNumber" defaultValue="ED/25-26/-122" />
+              
+            </div> */}
+             <div className="invoice-item">
+              <label htmlFor="invoiceDate">Date:</label>
             </div>
             <div className="invoice-item">
               <input type="date" id="invoiceDate" defaultValue="2025-05-30" />
@@ -344,14 +352,14 @@ const HomePage = () => {
             <td>
               <strong>Bank Details</strong><br />
               Name: ELECTRIC DRIVE<br />
-              IFSC Code: KKBK0005661<br />
-              Account No: 5448825666<br />
+              IFSC Code: CBIN0284033<br />
+              Account No: 5800208027<br />
               Bank: Central Bank of India, Kisan College BRANCH
             </td>
-            <td>
-              <strong>Payment QR Code</strong><br />
+            <td style={{ width: "213px"}}>
+              {/* <strong>Payment QR Code</strong><br />
               UPI ID: kumarvishvishal23@ybl<br />
-              <img src="qr_placeholder.png" width="100" alt="QR Code" />
+              <img src="qr_placeholder.png" width="100" alt="QR Code" /> */}
             </td>
           </tr>
         </tbody>

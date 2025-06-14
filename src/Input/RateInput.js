@@ -203,9 +203,9 @@ function RateInput() {
             <th>#</th>
             <th style={{ width: '35%' }}>Item</th>
             <th>HSN</th>
-            <th>Qty</th>
+            <th style={{ width: '46px' }}>Qty</th>
             <th>Rate</th>
-            <th>GST %</th>
+            <th style={{ width: '46px' }}>GST %</th>
             <th>TAX</th>
             <th>Amount</th>
           </tr>

@@ -25,7 +25,7 @@ const AllRecordsTable = () => {
 // qty: "1"
 // rate: "545466"
 // tax: "54546.60"
-  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo', 'hsn', 'qty', 'rate','tax','companyAddress'];
+  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo', 'hsn', 'qty', 'rate','Gst','tax','amount','companyAddress'];
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 

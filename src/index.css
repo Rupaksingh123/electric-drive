@@ -63,7 +63,7 @@ body {
 
     @media print {
        body {
-    zoom: 90%; /* Adjust the scale here (e.g., 90% of actual size) */
+    zoom: 95%; /* Adjust the scale here (e.g., 90% of actual size) */
   }
       .button-group {
         display: none;
