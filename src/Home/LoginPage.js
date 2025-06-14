@@ -74,7 +74,7 @@ const handleLogin = async (e) => {
     // </div>
 
 
-  <div style={{width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f3f4f6'}}>
+  <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
     <div style={{border: '1px solid green',boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',padding: '30px',borderRadius: '10px',backgroundColor: 'white',color: 'green',fontSize: '20px',fontWeight: 'bold'}}>
     <h2 class="text-2xl font-bold mb-4">Login</h2>
      {/* <form class="space-y-4">
