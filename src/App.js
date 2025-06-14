@@ -63,16 +63,35 @@ import LoginPage from './Home/LoginPage';
 import ProtectedRoute from './Home/ProtectedRoute'; // This assumes you created ProtectedRoute.js
 import './App.css';
 
+import AutoLogout from './security/AutoLogout'; // adjust path as needed
+import AutoLogoutWatcher from './security/AutoLogoutWatcher'; 
+
 function App() {
   const toast = null; // or your toast logic here
 
+  // const timeLeft = AutoLogout(); // defaults to 15 min
+
+  // const secondsLeft = timeLeft !== null ? Math.ceil(timeLeft / 1000) : null;
+
+
   return (
     <Router>
+      
       <div className="p-4 space-x-4">
         {/* Navigation Links */}
         <Link to="/" className="text-blue-600 no-print">Home</Link>
         <Link to="/all-records" className="text-blue-600 no-print">All Records</Link>
       </div>
+
+{/* ⏳ Show countdown when < 15 seconds */}
+      {/* {secondsLeft !== null && secondsLeft <= 15 && (
+        <div className="text-red-600 text-center mt-2 no-print">
+          Session expires in {secondsLeft}s
+        </div>
+      )} */}
+       <AutoLogoutWatcher />
+
+
 
       {/* Toast Message */}
       {toast && <div id="toast" className="no-print">{toast}</div>}

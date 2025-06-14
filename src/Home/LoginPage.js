@@ -32,6 +32,7 @@ const handleLogin = async (e) => {
 
     if (data.success) {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loginTime',Date.now().toString());
       navigate('/');
     } else {
       console.log("Login failed:", data.message);
@@ -48,8 +49,46 @@ const handleLogin = async (e) => {
 
 
   return (
-    <div className="p-8 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
+    // <div className="p-8 max-w-md mx-auto">
+    //   <h2 className="text-2xl font-bold mb-4">Login</h2>
+    //   <form onSubmit={handleLogin} className="space-y-4">
+    //     <input
+    //       type="text"
+    //       placeholder="Username"
+    //       value={username}
+    //       onChange={(e) => setUsername(e.target.value)}
+    //       className="border p-2 w-full"
+    //       required
+    //     />
+    //     <input
+    //       type="password"
+    //       placeholder="Password"
+    //       value={password}
+    //       onChange={(e) => setPassword(e.target.value)}
+    //       className="border p-2 w-full"
+    //       required
+    //     />
+    //     <button type="submit" className="bg-blue-600 text-white px-4 py-2">Login</button>
+    //     {error && <p className="text-red-500">{error}</p>}
+    //   </form>
+    // </div>
+
+
+  <div style={{width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f3f4f6'}}>
+    <div style={{border: '1px solid green',boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',padding: '30px',borderRadius: '10px',backgroundColor: 'white',color: 'green',fontSize: '20px',fontWeight: 'bold'}}>
+    <h2 class="text-2xl font-bold mb-4">Login</h2>
+     {/* <form class="space-y-4">
+      <input placeholder="Username" class="border p-2 w-full" required="" type="text" value="" />
+      <input
+           type="password"
+           placeholder="Password"
+           value={password}
+           onChange={(e) => setPassword(e.target.value)}
+           className="border p-2 w-full"
+           required
+         />
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2">Login</button>
+      </form> */}
       <form onSubmit={handleLogin} className="space-y-4">
         <input
           type="text"
@@ -70,7 +109,10 @@ const handleLogin = async (e) => {
         <button type="submit" className="bg-blue-600 text-white px-4 py-2">Login</button>
         {error && <p className="text-red-500">{error}</p>}
       </form>
-    </div>
+    </div></div>
+ 
+
+
   );
 };
 
