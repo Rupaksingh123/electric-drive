@@ -64,6 +64,14 @@ body {
     @media print {
        body {
     zoom: 95%; /* Adjust the scale here (e.g., 90% of actual size) */
+     body {
+    -webkit-print-color-adjust: exact; /* Chrome/Safari */
+    print-color-adjust: exact;         /* Firefox */
+  }
+  }
+  .container {
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
       .button-group {
         display: none;

@@ -1,7 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import RateInput from "../Input/RateInput";
 
+
 const HomePage = () => {
+
+
+  const [isEditable, setIsEditable] = useState(true);
+  const [showEditButtons, setShowEditButtons] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
+
+  const handleGetInvoice = () => {
+    setIsEditing(false);     // Initially in view mode
+    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
+    fetchByInvoice();
+
+    setShowControls(true);   // Show edit + cancel buttons
+
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);      // Switch to editing mode
+    setIsEditable(true);
+  };
+
+  const handleUpdateClick = () => {
+    console.log("in update");
+    // You can add actual update logic here (e.g., sending data to Google Apps Script)
+    setIsEditing(false);     // Initially in view mode
+    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
+  };
+
+  const handleCancelClick = () => {
+    window.location.reload(); // Reset everything
+  };
+
 
   const monitorInternetConnection = () => {
     window.addEventListener('online', () => alert('Back online'));
@@ -98,18 +131,26 @@ const HomePage = () => {
   };
 
   //helper for fetchLatestInvoiceNumber function
+  // function incrementInvoiceNumber(invoice) {
+  //   const match = invoice.match(/(.*\/)(\d+)$/);
+  //   if (!match) return invoice;
+  //   const prefix = match[1]; // "ED/25-26/"
+  //   const number = parseInt(match[2]);
+  //   const incremented = number + 1;
+  //   return `${prefix}${incremented}`;
+  // }
   function incrementInvoiceNumber(invoice) {
-    const match = invoice.match(/(.*\/-)(\d+)$/);
-
+    const match = invoice.match(/(.*\/)(\d+)$/);
     if (!match) return invoice;
 
-    const prefix = match[1]; // "ED/25-26/-"
-    const number = parseInt(match[2]);
-
+    const prefix = match[1];           // "ED/25-26/"
+    const number = parseInt(match[2]); // 1
     const incremented = number + 1;
+    const padded = String(incremented).padStart(match[2].length, '0'); // Preserve leading zeros
 
-    return `${prefix}${incremented}`;
+    return `${prefix}${padded}`;
   }
+
 
   const fetchLatestInvoiceNumber = () => {
     console.log("Fetching latest invoice number...");
@@ -125,7 +166,7 @@ const HomePage = () => {
 
           document.getElementById('invoiceNumber').value = nextInvoice || "";
 
-          console.log(nextInvoice);
+          console.log("next invoice no : " + nextInvoice);
         } else {
           console.warn("No invoice found.");
         }
@@ -152,21 +193,7 @@ const HomePage = () => {
         if (data.success) {
           console.log("Invoice Data:", data.data);
           const {
-            billTo,
-            billMobile,
-            billPanNo,
-            billEmail,
-            billAadhar,
-            BatteryNo,
-            ChassisNo,
-            Gst, MotorNo,
-            amount, hsn
-            , invoiceDate
-
-            , modelNo
-            , qty
-            , rate
-            , tax
+            billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo, Gst, MotorNo, amount, hsn, invoiceDate, modelNo, qty, rate, tax
           } = data.data;
 
 
@@ -189,9 +216,12 @@ const HomePage = () => {
           document.getElementById('gst').value = Gst || "";
           document.getElementById('tax').value = tax || "";
           document.getElementById('amount').value = amount || "";
+          // setShowEdit(true);
+          setShowControls(true);
 
         } else {
           console.warn("Not found:", data.message);
+          alert("Not found:", data.message);
         }
       })
       .catch(err => {
@@ -235,14 +265,71 @@ const HomePage = () => {
           </p>
         </div>
 
+        
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <input
             id="getinvoiceNumber"
-            defaultValue="ED/25-26/-"
+            placeholder="ED/25-26/"
             style={{ width: '110px', padding: '4px' }}
+            disabled={showControls} // disable after fetching
           />
-          <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button>
+
+          {!showControls && (
+            <button
+              id="getByInvoice"
+              onClick={handleGetInvoice}
+              style={{
+                backgroundColor: '#0275d8',
+                color: 'white',
+                padding: '5px 10px'
+              }}
+            >
+              Get By Invoice
+            </button>
+          )}
+
+          {showControls && (
+            <>
+              {!isEditing ? (
+                <button
+                  onClick={handleEditClick}
+                  style={{
+                    backgroundColor: '#f0ad4e',
+                    color: 'white',
+                    padding: '5px 10px'
+                  }}
+                >
+                  Edit
+                </button>
+              ) : (
+                <button
+                  onClick={handleUpdateClick}
+                  style={{
+                    backgroundColor: '#5cb85c',
+                    color: 'white',
+                    padding: '5px 10px'
+                  }}
+                >
+                  Update
+                </button>
+              )}
+
+              <button
+                onClick={handleCancelClick}
+                style={{
+                  backgroundColor: '#d9534f',
+                  color: 'white',
+                  padding: '5px 10px'
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          )}
         </div>
+
+
 
 
       </div>
@@ -273,30 +360,25 @@ const HomePage = () => {
               <label>PAN Number:</label>
               <label>KHYPD2397L</label>
             </div>
-            
+
           </div>
         </div>
 
         <div className="right-div">
           <div className="invoice-header">
             <div className="invoice-item">
-              <label htmlFor="invoiceNumber" style={{  width: "123px"}}>Invoice No. :</label>
+              <label htmlFor="invoiceNumber" style={{ width: "123px" }}>Invoice No. :</label>
             </div>
             <div className="invoice-item">
-              <input id="invoiceNumber" defaultValue="ED/25-26/-122" />
-              {/* <button id="getByInvoice" onClick={fetchByInvoice}>Get By Invoice</button> */}
+              <input id="invoiceNumber" defaultValue="ED/25-26/001" disabled />
+
             </div>
-            {/* <div className="invoice-item">
-              <label htmlFor="invoiceDate">Date:</label>
-            </div> */}
+
           </div>
 
           <div className="invoice-inputs">
-            {/* <div className="invoice-item">
-              <input id="invoiceNumber" defaultValue="ED/25-26/-122" />
-              
-            </div> */}
-             <div className="invoice-item">
+
+            <div className="invoice-item">
               <label htmlFor="invoiceDate">Date:</label>
             </div>
             <div className="invoice-item">
@@ -307,7 +389,14 @@ const HomePage = () => {
       </div>
 
       {/* Bill To Info */}
-      <div className="container">
+      <div className="container" style={{
+        marginTop: '20px',
+        pointerEvents: isEditable ? 'auto' : 'none',
+        opacity: isEditable ? 1 : 0.6,
+        border: '1px solid #ccc',
+
+        borderRadius: '5px',
+      }}>
         <div className="left-div">
           <div className="contact-item">
             <label style={{ width: "65px" }}>Bill To: </label>
@@ -333,11 +422,18 @@ const HomePage = () => {
           </div>
         </div>
         <div className="right-div">
-          <h2>Right Section (40%)</h2>
+          {/* <h2>Right Section (40%)</h2> */}
         </div>
       </div>
 
-      <div id="details">
+      <div id="details" className="container" style={{
+        marginTop: '20px',
+        pointerEvents: isEditable ? 'auto' : 'none',
+        opacity: isEditable ? 1 : 0.6,
+        border: '1px solid #ccc',
+
+        borderRadius: '5px',
+      }}>
         <RateInput />
       </div>
 
@@ -356,7 +452,7 @@ const HomePage = () => {
               Account No: 5800208027<br />
               Bank: Central Bank of India, Kisan College BRANCH
             </td>
-            <td style={{ width: "213px"}}>
+            <td style={{ width: "213px" }}>
               {/* <strong>Payment QR Code</strong><br />
               UPI ID: kumarvishvishal23@ybl<br />
               <img src="qr_placeholder.png" width="100" alt="QR Code" /> */}
