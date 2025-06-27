@@ -82,9 +82,12 @@ body {
         border: none;
       }
 
-      .no-print ,footer{
+      .no-print ,.getinvoiceNumber,.getByInvoice,footer{
         display: none !important;
       }
+
+      
+
     }
 
     /* 
