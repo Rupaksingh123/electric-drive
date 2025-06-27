@@ -261,7 +261,7 @@ const HomePage = () => {
       <div className="button-group">
         <button id="saveBtn">Save</button>
         <button onClick={() => window.print()}>Print</button>
-        <button id="getAll" onClick={getAllInvoices}>Get All records</button>
+        {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
       </div>
 
 

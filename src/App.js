@@ -79,7 +79,7 @@ function App() {
       
       <div className="p-4 space-x-4">
         {/* Navigation Links */}
-        <Link to="/" className="text-blue-600 no-print">Home</Link>
+        <Link to="/" className="text-blue-600 no-print" style={{marginRight:"20px"}}>Home</Link> 
         <Link to="/all-records" className="text-blue-600 no-print">All Records</Link>
       </div>
 
