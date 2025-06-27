@@ -216,6 +216,15 @@ const HomePage = () => {
           document.getElementById('gst').value = Gst || "";
           document.getElementById('tax').value = tax || "";
           document.getElementById('amount').value = amount || "";
+          var halftax=Gst/2;
+
+          document.getElementById('taxableVal').value = amount || "";
+          document.getElementById('gst1').value = (Gst / 2).toFixed(2) + "%" || "";
+          document.getElementById('cgst').value = tax/2 || "";
+          document.getElementById('sgstamt').value = tax/2 || "";
+          document.getElementById('tax1').value = tax || "";
+
+          console.log("half gst : " +halftax + " tax "+tax/2 + ", nn " +tax/halftax)
           // setShowEdit(true);
           setShowControls(true);
 
