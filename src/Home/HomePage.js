@@ -224,7 +224,7 @@ const HomePage = () => {
           document.getElementById('sgstamt').value = tax/2 || "";
           document.getElementById('tax1').value = tax || "";
 
-          console.log("half gst : " +halftax + " tax "+tax/2 + ", nn " +tax/halftax)
+          console.log("half gst : " +halftax + " tax here "+tax/2 + ", nn " +tax/halftax)
           // setShowEdit(true);
           setShowControls(true);
 
