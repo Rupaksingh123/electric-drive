@@ -73,6 +73,10 @@ button {
       /* Firefox */
     }
   }
+   @page {
+        size: A4;
+        margin: 20mm;
+      }
 
   .container {
     opacity: 1 !important;
