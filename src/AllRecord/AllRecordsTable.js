@@ -25,12 +25,12 @@ const AllRecordsTable = () => {
 // qty: "1"
 // rate: "545466"
 // tax: "54546.60"
-  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo', 'hsn', 'qty', 'rate','Gst','tax','amount','companyAddress'];
+  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo','ControllerNo', 'hsn', 'qty', 'rate','Gst','tax','amount','companyAddress'];
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const API_URL =
-    "https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?mode=allrecords";
+    "https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec?mode=allrecords";
 
   useEffect(() => {
     const fetchInvoices = async () => {

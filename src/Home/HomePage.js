@@ -19,12 +19,14 @@ const HomePage = () => {
 
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);      // Switch to editing mode
+  const handleEditClick = (e) => {
+    e.preventDefault();
+     setIsEditing(true);      // Switch to editing mode
     setIsEditable(true);
   };
 
-  const handleUpdateClick = () => {
+  const handleUpdateClick = (e) => {
+    // e.preventDefault();
     console.log("in update");
     // You can add actual update logic here (e.g., sending data to Google Apps Script)
     setIsEditing(false);     // Initially in view mode
@@ -64,12 +66,16 @@ const HomePage = () => {
       ChassisNo: document.getElementById('ChassisNo').value,
       MotorNo: document.getElementById('MotorNo').value,
       BatteryNo: document.getElementById('BatteryNo').value,
+      ControllerNo: document.getElementById('Controller').value,
+      
       hsn: document.getElementById('hsn').value,
       qty: document.getElementById('qty').value,
       rate: document.getElementById('rate').value,
       Gst: document.getElementById('gst').value,
       tax: document.getElementById('tax').value,
-      amount: document.getElementById('amount').value
+      amount: document.getElementById('amount').value,
+      received: document.getElementById('received').value,
+      balance: document.getElementById('balance').value
     };
 
 
@@ -77,7 +83,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -98,15 +104,22 @@ const HomePage = () => {
         billEmail: invoiceData.billEmail,
         billAadhar: invoiceData.billAadhar,
         modelNo: invoiceData.modelNo,
+        
         ChassisNo: invoiceData.ChassisNo,
         MotorNo: invoiceData.MotorNo,
         BatteryNo: invoiceData.BatteryNo,
+        ControllerNo: invoiceData.ControllerNo,
         hsn: invoiceData.hsn,
         qty: invoiceData.qty,
         rate: invoiceData.rate,
         Gst: invoiceData.Gst,
         tax: invoiceData.tax,
-        amount: invoiceData.amount
+        amount: invoiceData.amount,
+        receivedAmount: invoiceData.received,
+        balanceAmount: invoiceData.balance
+
+        //"balance" is database column name : right balance in above variable name 
+        
       })
     })
       .then(async (response) => {
@@ -154,7 +167,7 @@ const HomePage = () => {
 
   const fetchLatestInvoiceNumber = () => {
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -187,13 +200,13 @@ const HomePage = () => {
     console.log("in fetcByInvoice");
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
     console.log("Fetched invoice invoiceNumber :", invoiceNumber);
-    fetch(`https://script.google.com/macros/s/AKfycbxvKm5b9J0qszWGTp5YZjqD7f10AyJ_4xh2xNC4rtIHWM1jg6KXiEQ-AFOKBLOnGI0cNw/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
           console.log("Invoice Data:", data.data);
           const {
-            billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo, Gst, MotorNo, amount, hsn, invoiceDate, modelNo, qty, rate, tax
+            billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo, Gst, MotorNo, amount, hsn, invoiceDate, modelNo,ControllerNo, qty, rate, tax,receivedAmount,balanceAmount
           } = data.data;
 
 
@@ -206,6 +219,7 @@ const HomePage = () => {
           document.getElementById('bill-email').value = billEmail || "";
           document.getElementById('bill-aadhar').value = billAadhar || "";
 
+ document.getElementById('Controller').value = ControllerNo || "";
           document.getElementById('modelNo').value = modelNo || "";
           document.getElementById('ChassisNo').value = ChassisNo || "";
           document.getElementById('MotorNo').value = MotorNo || "";
@@ -216,6 +230,11 @@ const HomePage = () => {
           document.getElementById('gst').value = Gst || "";
           document.getElementById('tax').value = tax || "";
           document.getElementById('amount').value = amount || "";
+
+          document.getElementById('grandTotal').value = amount || "";
+          document.getElementById('received').value = receivedAmount || "";
+          document.getElementById('balance').value = balanceAmount || "";
+
           var halftax=Gst/2;
 
           document.getElementById('taxableVal').value = amount || "";
@@ -228,6 +247,39 @@ const HomePage = () => {
           // setShowEdit(true);
           setShowControls(true);
 
+          const statusLabel = document.getElementById('status');
+
+// Apply base styles
+statusLabel.style.display = "inline-block";
+statusLabel.style.width = "100px";
+statusLabel.style.padding = "6px 12px";
+statusLabel.style.borderRadius = "6px";
+statusLabel.style.fontWeight = "bold";
+statusLabel.style.textAlign = "center";
+statusLabel.style.color = "white";
+statusLabel.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
+
+// Example balanceAmount variable
+//const balanceAmount = 100; // Change this to 0 to test "Done"
+
+if (balanceAmount !== 0) {
+  statusLabel.innerText = "Pending";
+  statusLabel.style.backgroundColor = "#f39c12"; // orange
+  console.log("Pending");
+} else {
+  statusLabel.innerText = "Done";
+  statusLabel.style.backgroundColor = "#2ecc71"; // green
+  console.log("Done");
+}
+
+
+// if(balanceAmount!== 0){
+//    document.getElementById('status').innerText = "Pending";
+//   console.log("Pending");
+// }else{
+//    document.getElementById('status').innerText = "Done";
+//    console.log("Done");
+// }
         } else {
           console.warn("Not found:", data.message);
           alert("Not found:", data.message);
@@ -261,6 +313,7 @@ const HomePage = () => {
       <div className="button-group">
         <button id="saveBtn">Save</button>
         <button onClick={() => window.print()}>Print</button>
+        <label id="status" style={{ width:'100px' }}></label>
         {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
       </div>
 

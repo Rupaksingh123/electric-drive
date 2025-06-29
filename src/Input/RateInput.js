@@ -228,6 +228,10 @@ function RateInput() {
               Chassis No: <input id="ChassisNo" type="text" /><br /> */}
               Motor No: <input id="MotorNo" type="text" /><br />
               Battery No: <input id="BatteryNo" type="text" />
+              <div class="form-row">
+  <label for="Controller">Controller No:</label>
+  <input id="Controller" type="text" />
+</div>
             </td>
             <td><input id="hsn" type="text" value="87116020" readOnly /></td>
             <td>
