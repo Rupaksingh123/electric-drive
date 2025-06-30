@@ -687,8 +687,9 @@ if (balanceAmount !== 0) {
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>
               <strong>Terms and Conditions:</strong><br />
-              1. Goods once sold will not be taken back or exchanged<br />
-              2. All disputes are subject to NALANDA jurisdiction only
+              1. Motor,Charger, Controller - One Year Warranty , Battery - 15 Month Warranty<br />
+              2. Goods once sold will not be taken back or exchanged<br />
+              3. All disputes are subject to NALANDA jurisdiction only
             </td>
             <td style={{ verticalAlign: "bottom", textAlign: "center", height: "100px" }}>
               <p style={{ margin: 0 }}>
