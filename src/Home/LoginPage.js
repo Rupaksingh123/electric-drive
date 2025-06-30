@@ -14,7 +14,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
    setLoading(true);
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

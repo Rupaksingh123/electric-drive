@@ -28,9 +28,11 @@ const HomePage = () => {
   const handleUpdateClick = (e) => {
     // e.preventDefault();
     console.log("in update");
+    updateInvoice();
     // You can add actual update logic here (e.g., sending data to Google Apps Script)
     setIsEditing(false);     // Initially in view mode
     setIsEditable(false);    // 🔐 Disable form until Edit is clicked
+
   };
 
   const handleCancelClick = () => {
@@ -83,7 +85,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -143,6 +145,163 @@ const HomePage = () => {
 
   };
 
+
+  const updateInvoice = () => {
+
+  const invoiceData = {
+    invoiceNumber: document.getElementById('getinvoiceNumber').value,
+    // gstin: document.getElementById('gstin').value,
+    // email: document.getElementById('bill-email').value,
+    billTo: document.getElementById('bill-to-address').value,
+    billPan: document.getElementById('bill-pan').value,
+    billAadhar: document.getElementById('bill-aadhar').value,
+    modelNo: document.getElementById('modelNo').value,
+    ChassisNo: document.getElementById('ChassisNo').value,
+    ControllerNo: document.getElementById('Controller').value,
+    amount: document.getElementById('amount').value,
+    balanceAmount: document.getElementById('balance').value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      mode: "updateInvoice",
+      invoiceNumber: invoiceData.invoiceNumber,
+      // gstin: invoiceData.gstin,
+      // email: invoiceData.email,
+      billTo: invoiceData.billTo,
+      billPan: invoiceData.billPan,
+      billAadhar: invoiceData.billAadhar,
+      modelNo: invoiceData.modelNo,
+      ChassisNo: invoiceData.ChassisNo,
+      ControllerNo: invoiceData.ControllerNo,
+      amount: invoiceData.amount,
+      balanceAmount: invoiceData.balanceAmount
+    })
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Update response:", data);
+      alert(data.status === "success" ? "Invoice updated successfully." : data.message);
+    })
+    .catch(error => {
+      console.error("Error updating invoice:", error.message || error);
+      alert("Update failed: " + error.message);
+    });
+};
+
+
+
+  // const updateInvoice = () => {
+  //   console.log("Saving invoice... (implement your logic here)");
+
+  //   const updateinvoiceData = {
+  //     companyAddress: "NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118",
+  //     gstin: "10KHYPD2397L1ZO",
+  //     mobile: "8825148565",
+  //     pan: "KHYPD2397L",
+  //     email: "evelectricdrive@gmail.com",
+  //     invoiceNumber: document.getElementById('invoiceNumber').value,
+  //     invoiceDate: document.getElementById('invoiceDate').value,
+  //     billTo: document.getElementById('bill-to-address').value,
+  //     billMobile: document.getElementById('bill-mobile').value,
+  //     billPan: document.getElementById('bill-pan').value,
+  //     billEmail: document.getElementById('bill-email').value,
+  //     billAadhar: document.getElementById('bill-aadhar').value,
+
+
+
+  //     modelNo: document.getElementById('modelNo').value,
+  //     ChassisNo: document.getElementById('ChassisNo').value,
+  //     MotorNo: document.getElementById('MotorNo').value,
+  //     BatteryNo: document.getElementById('BatteryNo').value,
+  //     ControllerNo: document.getElementById('Controller').value,
+      
+  //     hsn: document.getElementById('hsn').value,
+  //     qty: document.getElementById('qty').value,
+  //     rate: document.getElementById('rate').value,
+  //     Gst: document.getElementById('gst').value,
+  //     tax: document.getElementById('tax').value,
+  //     amount: document.getElementById('amount').value,
+  //     received: document.getElementById('received').value,
+  //     balance: document.getElementById('balance').value
+  //   };
+
+
+
+  //   console.log(invoiceData);
+  //   localStorage.setItem('invoice', JSON.stringify(invoiceData));
+
+  //   fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
+  //     method: "POST",
+  //     mode: "cors",
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded"
+  //     },
+  //     body: new URLSearchParams({
+  //       mode: "updateInvoice",
+  //       name: "Rupak",
+  //       gstin: updateinvoiceData.gstin,
+  //       mobile: updateinvoiceData.mobile,
+  //       pan: updateinvoiceData.pan,
+  //       email: invoiceData.email,
+  //       invoiceNumber: updateinvoiceData.invoiceNumber,
+  //       invoiceDate: updateinvoiceData.invoiceDate,
+  //       billTo: updateinvoiceData.billTo,
+  //       billMobile: updateinvoiceData.billMobile,
+  //       billPan: updateinvoiceData.billPan,
+  //       billEmail: updateinvoiceData.billEmail,
+  //       billAadhar: updateinvoiceData.billAadhar,
+  //       modelNo: updateinvoiceData.modelNo,
+        
+  //       ChassisNo: updateinvoiceData.ChassisNo,
+  //       MotorNo: updateinvoiceData.MotorNo,
+  //       BatteryNo: updateinvoiceData.BatteryNo,
+  //       ControllerNo: updateinvoiceData.ControllerNo,
+  //       hsn: updateinvoiceData.hsn,
+  //       qty: updateinvoiceData.qty,
+  //       rate: updateinvoiceData.rate,
+  //       Gst: updateinvoiceData.Gst,
+  //       tax: updateinvoiceData.tax,
+  //       amount: updateinvoiceData.amount,
+  //       receivedAmount: updateinvoiceData.received,
+  //       balanceAmount: updateinvoiceData.balance
+
+  //       //"balance" is database column name : right balance in above variable name 
+        
+  //     })
+  //   })
+  //     .then(async (response) => {
+  //       if (!response.ok) {
+  //         // Server responded with an HTTP error
+  //         const errorText = await response.text();
+  //         throw new Error(`HTTP ${response.status}: ${errorText}`);
+  //       }
+  //       return response.json(); // or text() depending on your GAS output
+  //     })
+  //     .then(data => {
+  //       console.log("Response from server:", data);
+  //     })
+  //     .catch(error => {
+  //       console.error("Fetch failed:", error.message || error);
+  //       alert("Fetch Error: " + error.message);
+  //     });
+
+  //   alert('Invoice saved locally.');
+
+
+  // };
+
   //helper for fetchLatestInvoiceNumber function
   // function incrementInvoiceNumber(invoice) {
   //   const match = invoice.match(/(.*\/)(\d+)$/);
@@ -167,7 +326,7 @@ const HomePage = () => {
 
   const fetchLatestInvoiceNumber = () => {
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -200,7 +359,7 @@ const HomePage = () => {
     console.log("in fetcByInvoice");
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
     console.log("Fetched invoice invoiceNumber :", invoiceNumber);
-    fetch(`https://script.google.com/macros/s/AKfycbzBjnnNTyvs6xnocGNn4eaxTExqm-mmPM_nrKU4V-H30BozMZevgnzT7Y7dBIrRIdiTtg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
