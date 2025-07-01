@@ -153,6 +153,9 @@
 
 
 import React, { useState, useEffect } from 'react';
+import { numberToWords } from '../utils/numberToWords';
+
+
 
 function RateInput() {
   const [qty, setQty] = useState(1);
@@ -167,6 +170,8 @@ function RateInput() {
   const [cgstAmount, setCgstAmount] = useState(0);
   const [sgstAmount, setSgstAmount] = useState(0);
   const [taxableValue, setTaxableValue] = useState(0);
+
+
 
   const handleCalc = (newQty, newRate, newGst) => {
     const baseAmount = newQty * newRate;
@@ -183,6 +188,9 @@ function RateInput() {
     setAmount(totalAmount.toFixed(2));
     setGrandTotal(totalAmount.toFixed(2));
     setBalance((totalAmount - received).toFixed(2));
+
+    const inWords = numberToWords(Math.round(totalAmount));
+  document.getElementById("inWords").innerText = inWords;
   };
 
   const handleReceivedChange = (e) => {

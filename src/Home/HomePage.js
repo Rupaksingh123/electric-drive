@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RateInput from "../Input/RateInput";
+import { numberToWords } from '../utils/numberToWords';
 
 
 const HomePage = () => {
@@ -44,6 +45,9 @@ const HomePage = () => {
     window.addEventListener('online', () => alert('Back online'));
     window.addEventListener('offline', () => alert('You are offline'));
   };
+
+
+
 
   const saveInvoice = () => {
     console.log("Saving invoice... (implement your logic here)");
@@ -202,115 +206,7 @@ const HomePage = () => {
 
 
 
-  // const updateInvoice = () => {
-  //   console.log("Saving invoice... (implement your logic here)");
-
-  //   const updateinvoiceData = {
-  //     companyAddress: "NEAR VISHAL SUPER MART ,KISAN COLL. RD, PO+PS SOHSARAI, BIHAR SHARIF, NALANDA, 803118",
-  //     gstin: "10KHYPD2397L1ZO",
-  //     mobile: "8825148565",
-  //     pan: "KHYPD2397L",
-  //     email: "evelectricdrive@gmail.com",
-  //     invoiceNumber: document.getElementById('invoiceNumber').value,
-  //     invoiceDate: document.getElementById('invoiceDate').value,
-  //     billTo: document.getElementById('bill-to-address').value,
-  //     billMobile: document.getElementById('bill-mobile').value,
-  //     billPan: document.getElementById('bill-pan').value,
-  //     billEmail: document.getElementById('bill-email').value,
-  //     billAadhar: document.getElementById('bill-aadhar').value,
-
-
-
-  //     modelNo: document.getElementById('modelNo').value,
-  //     ChassisNo: document.getElementById('ChassisNo').value,
-  //     MotorNo: document.getElementById('MotorNo').value,
-  //     BatteryNo: document.getElementById('BatteryNo').value,
-  //     ControllerNo: document.getElementById('Controller').value,
-      
-  //     hsn: document.getElementById('hsn').value,
-  //     qty: document.getElementById('qty').value,
-  //     rate: document.getElementById('rate').value,
-  //     Gst: document.getElementById('gst').value,
-  //     tax: document.getElementById('tax').value,
-  //     amount: document.getElementById('amount').value,
-  //     received: document.getElementById('received').value,
-  //     balance: document.getElementById('balance').value
-  //   };
-
-
-
-  //   console.log(invoiceData);
-  //   localStorage.setItem('invoice', JSON.stringify(invoiceData));
-
-  //   fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     body: new URLSearchParams({
-  //       mode: "updateInvoice",
-  //       name: "Rupak",
-  //       gstin: updateinvoiceData.gstin,
-  //       mobile: updateinvoiceData.mobile,
-  //       pan: updateinvoiceData.pan,
-  //       email: invoiceData.email,
-  //       invoiceNumber: updateinvoiceData.invoiceNumber,
-  //       invoiceDate: updateinvoiceData.invoiceDate,
-  //       billTo: updateinvoiceData.billTo,
-  //       billMobile: updateinvoiceData.billMobile,
-  //       billPan: updateinvoiceData.billPan,
-  //       billEmail: updateinvoiceData.billEmail,
-  //       billAadhar: updateinvoiceData.billAadhar,
-  //       modelNo: updateinvoiceData.modelNo,
-        
-  //       ChassisNo: updateinvoiceData.ChassisNo,
-  //       MotorNo: updateinvoiceData.MotorNo,
-  //       BatteryNo: updateinvoiceData.BatteryNo,
-  //       ControllerNo: updateinvoiceData.ControllerNo,
-  //       hsn: updateinvoiceData.hsn,
-  //       qty: updateinvoiceData.qty,
-  //       rate: updateinvoiceData.rate,
-  //       Gst: updateinvoiceData.Gst,
-  //       tax: updateinvoiceData.tax,
-  //       amount: updateinvoiceData.amount,
-  //       receivedAmount: updateinvoiceData.received,
-  //       balanceAmount: updateinvoiceData.balance
-
-  //       //"balance" is database column name : right balance in above variable name 
-        
-  //     })
-  //   })
-  //     .then(async (response) => {
-  //       if (!response.ok) {
-  //         // Server responded with an HTTP error
-  //         const errorText = await response.text();
-  //         throw new Error(`HTTP ${response.status}: ${errorText}`);
-  //       }
-  //       return response.json(); // or text() depending on your GAS output
-  //     })
-  //     .then(data => {
-  //       console.log("Response from server:", data);
-  //     })
-  //     .catch(error => {
-  //       console.error("Fetch failed:", error.message || error);
-  //       alert("Fetch Error: " + error.message);
-  //     });
-
-  //   alert('Invoice saved locally.');
-
-
-  // };
-
-  //helper for fetchLatestInvoiceNumber function
-  // function incrementInvoiceNumber(invoice) {
-  //   const match = invoice.match(/(.*\/)(\d+)$/);
-  //   if (!match) return invoice;
-  //   const prefix = match[1]; // "ED/25-26/"
-  //   const number = parseInt(match[2]);
-  //   const incremented = number + 1;
-  //   return `${prefix}${incremented}`;
-  // }
+ 
   function incrementInvoiceNumber(invoice) {
     const match = invoice.match(/(.*\/)(\d+)$/);
     if (!match) return invoice;
@@ -401,6 +297,10 @@ const HomePage = () => {
           document.getElementById('cgst').value = tax/2 || "";
           document.getElementById('sgstamt').value = tax/2 || "";
           document.getElementById('tax1').value = tax || "";
+
+         // let word=numberToWords(amount);
+          document.getElementById('inWords').innerText = numberToWords(amount);
+          
 
           console.log("half gst : " +halftax + " tax here "+tax/2 + ", nn " +tax/halftax)
           // setShowEdit(true);
