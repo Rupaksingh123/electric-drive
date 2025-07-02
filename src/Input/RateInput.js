@@ -157,19 +157,25 @@ import { numberToWords } from '../utils/numberToWords';
 
 
 
-function RateInput() {
-  const [qty, setQty] = useState(1);
-  const [rate, setRate] = useState(1);
-  const [gst, setGst] = useState(5);
-  const [tax, setTax] = useState(0);
-  const [amount, setAmount] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [received, setReceived] = useState(0);
-  const [balance, setBalance] = useState(0);
+function RateInput( { initialData = {} } ) {
+  console.log("🚀 initialData received in RateInput:", initialData);
+  // const [qty, setQty] = useState(1);
+  // const [rate, setRate] = useState(1);
+  // const [gst, setGst] = useState(5);
+  // const [tax, setTax] = useState(0);
+  const [qty, setQty] = useState(initialData.qty || 1);
+const [rate, setRate] = useState(initialData.rate || 1);
+const [gst, setGst] = useState(initialData.Gst || 5);
+const [tax, setTax] = useState(initialData.tax || 0);
 
-  const [cgstAmount, setCgstAmount] = useState(0);
-  const [sgstAmount, setSgstAmount] = useState(0);
-  const [taxableValue, setTaxableValue] = useState(0);
+  const [amount, setAmount] = useState(initialData.amount || 0);
+  const [grandTotal, setGrandTotal] = useState(initialData.amount || 0);
+  const [received, setReceived] = useState(initialData.receivedAmount || 0);
+  const [balance, setBalance] = useState(initialData.balanceAmount || 0);
+
+  const [cgstAmount, setCgstAmount] = useState(initialData.cgstAmount || 0);
+  const [sgstAmount, setSgstAmount] = useState(initialData.sgstAmount || 0);
+  const [taxableValue, setTaxableValue] = useState(initialData.amount || 0);
 
 
 
@@ -192,6 +198,31 @@ function RateInput() {
     const inWords = numberToWords(Math.round(totalAmount));
   document.getElementById("inWords").innerText = inWords;
   };
+
+  useEffect(() => {
+  if (initialData) {
+    setQty(initialData.qty || 1);
+    setRate(initialData.rate || 1);
+    setGst(initialData.Gst || 5);
+    setReceived(initialData.receivedAmount || 0);
+
+setTax(initialData.tax || 0);
+
+  setAmount(initialData.amount || 0);
+  setGrandTotal(initialData.amount || 0);
+  
+  setBalance(initialData.balanceAmount || 0);
+const c_s_gst = (initialData.tax / 2).toFixed(2);
+  setCgstAmount(c_s_gst || 0);
+  setSgstAmount(c_s_gst || 0);
+  setTaxableValue(initialData.amount || 0);
+
+
+
+  }
+}, [initialData]);
+
+
 
   const handleReceivedChange = (e) => {
     const rcv = Number(e.target.value);

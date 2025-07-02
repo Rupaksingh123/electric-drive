@@ -30,7 +30,7 @@ const AllRecordsTable = () => {
   const [loading, setLoading] = useState(true);
 
   const API_URL =
-    "https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec?mode=allrecords";
+    "https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=allrecords";
 
   useEffect(() => {
     const fetchInvoices = async () => {

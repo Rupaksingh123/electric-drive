@@ -2,8 +2,24 @@ import React, { useEffect, useState } from "react";
 import RateInput from "../Input/RateInput";
 import { numberToWords } from '../utils/numberToWords';
 
+let fetchedInvoiceData = {}; // Stores latest fetched data
+
+
 
 const HomePage = () => {
+
+//  document.addEventListener("DOMContentLoaded", () => {
+//       const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+//       const invoiceDateInput = document.getElementById("invoiceDate");
+//       if (invoiceDateInput) {
+//         invoiceDateInput.value = today;
+//         console.log(today);
+//       }
+//     });
+
+
+
+
 
 
   const [isEditable, setIsEditable] = useState(true);
@@ -11,34 +27,7 @@ const HomePage = () => {
   const [showControls, setShowControls] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
 
-  const handleGetInvoice = () => {
-    setIsEditing(false);     // Initially in view mode
-    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
-    fetchByInvoice();
 
-    setShowControls(true);   // Show edit + cancel buttons
-
-  };
-
-  const handleEditClick = (e) => {
-    e.preventDefault();
-     setIsEditing(true);      // Switch to editing mode
-    setIsEditable(true);
-  };
-
-  const handleUpdateClick = (e) => {
-    // e.preventDefault();
-    console.log("in update");
-    updateInvoice();
-    // You can add actual update logic here (e.g., sending data to Google Apps Script)
-    setIsEditing(false);     // Initially in view mode
-    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
-
-  };
-
-  const handleCancelClick = () => {
-    window.location.reload(); // Reset everything
-  };
 
 
   const monitorInternetConnection = () => {
@@ -73,7 +62,7 @@ const HomePage = () => {
       MotorNo: document.getElementById('MotorNo').value,
       BatteryNo: document.getElementById('BatteryNo').value,
       ControllerNo: document.getElementById('Controller').value,
-      
+
       hsn: document.getElementById('hsn').value,
       qty: document.getElementById('qty').value,
       rate: document.getElementById('rate').value,
@@ -89,7 +78,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -110,7 +99,7 @@ const HomePage = () => {
         billEmail: invoiceData.billEmail,
         billAadhar: invoiceData.billAadhar,
         modelNo: invoiceData.modelNo,
-        
+
         ChassisNo: invoiceData.ChassisNo,
         MotorNo: invoiceData.MotorNo,
         BatteryNo: invoiceData.BatteryNo,
@@ -125,7 +114,7 @@ const HomePage = () => {
         balanceAmount: invoiceData.balance
 
         //"balance" is database column name : right balance in above variable name 
-        
+
       })
     })
       .then(async (response) => {
@@ -152,61 +141,89 @@ const HomePage = () => {
 
   const updateInvoice = () => {
 
-  const invoiceData = {
-    invoiceNumber: document.getElementById('getinvoiceNumber').value,
-    // gstin: document.getElementById('gstin').value,
-    // email: document.getElementById('bill-email').value,
-    billTo: document.getElementById('bill-to-address').value,
-    billPan: document.getElementById('bill-pan').value,
-    billAadhar: document.getElementById('bill-aadhar').value,
-    modelNo: document.getElementById('modelNo').value,
-    ChassisNo: document.getElementById('ChassisNo').value,
-    ControllerNo: document.getElementById('Controller').value,
-    amount: document.getElementById('amount').value,
-    balanceAmount: document.getElementById('balance').value
+    const invoiceData = {
+      invoiceNumber: document.getElementById('getinvoiceNumber').value,
+      // gstin: document.getElementById('gstin').value,
+      // email: document.getElementById('bill-email').value,
+      billTo: document.getElementById('bill-to-address').value,
+      billPan: document.getElementById('bill-pan').value,
+      billAadhar: document.getElementById('bill-aadhar').value,
+      modelNo: document.getElementById('modelNo').value,
+      ChassisNo: document.getElementById('ChassisNo').value,
+      ControllerNo: document.getElementById('Controller').value,
+      amount: document.getElementById('amount').value,
+      balanceAmount: document.getElementById('balance').value,
+
+
+
+      //invoiceDate: document.getElementById('invoiceDate').value,
+      billMobile: document.getElementById('bill-mobile').value,
+      billEmail: document.getElementById('bill-email').value,
+      MotorNo: document.getElementById('MotorNo').value,
+      BatteryNo: document.getElementById('BatteryNo').value,
+      hsn: document.getElementById('hsn').value,
+      qty: document.getElementById('qty').value,
+      rate: document.getElementById('rate').value,
+      Gst: document.getElementById('gst').value,
+      tax: document.getElementById('tax').value,
+      received: document.getElementById('received').value,
+
+
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        mode: "updateInvoice",
+        invoiceNumber: invoiceData.invoiceNumber,
+        // gstin: invoiceData.gstin,
+        // email: invoiceData.email,
+        billTo: invoiceData.billTo,
+        billPan: invoiceData.billPan,
+        billAadhar: invoiceData.billAadhar,
+        modelNo: invoiceData.modelNo,
+        ChassisNo: invoiceData.ChassisNo,
+        ControllerNo: invoiceData.ControllerNo,
+        amount: invoiceData.amount,
+        balanceAmount: invoiceData.balanceAmount,
+
+
+        billMobile: invoiceData.billMobile,
+        billEmail: invoiceData.billEmail,
+        MotorNo: invoiceData.MotorNo,
+        BatteryNo: invoiceData.BatteryNo,
+        hsn: invoiceData.hsn,
+        qty: invoiceData.qty,
+        rate: invoiceData.rate,
+        Gst: invoiceData.Gst,
+        tax: invoiceData.tax,
+        receivedAmount: invoiceData.received
+      })
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Update response:", data);
+        alert(data.status === "success" ? "Invoice updated successfully." : data.message);
+      })
+      .catch(error => {
+        console.error("Error updating invoice:", error.message || error);
+        alert("Update failed: " + error.message);
+      });
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec", {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams({
-      mode: "updateInvoice",
-      invoiceNumber: invoiceData.invoiceNumber,
-      // gstin: invoiceData.gstin,
-      // email: invoiceData.email,
-      billTo: invoiceData.billTo,
-      billPan: invoiceData.billPan,
-      billAadhar: invoiceData.billAadhar,
-      modelNo: invoiceData.modelNo,
-      ChassisNo: invoiceData.ChassisNo,
-      ControllerNo: invoiceData.ControllerNo,
-      amount: invoiceData.amount,
-      balanceAmount: invoiceData.balanceAmount
-    })
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errorText}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Update response:", data);
-      alert(data.status === "success" ? "Invoice updated successfully." : data.message);
-    })
-    .catch(error => {
-      console.error("Error updating invoice:", error.message || error);
-      alert("Update failed: " + error.message);
-    });
-};
 
 
 
- 
   function incrementInvoiceNumber(invoice) {
     const match = invoice.match(/(.*\/)(\d+)$/);
     if (!match) return invoice;
@@ -221,8 +238,16 @@ const HomePage = () => {
 
 
   const fetchLatestInvoiceNumber = () => {
+
+    const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const invoiceDateInput = document.getElementById("invoiceDate");
+      if (invoiceDateInput) {
+        invoiceDateInput.value = today;
+        console.log(today);
+      }
+
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -249,108 +274,255 @@ const HomePage = () => {
     console.log("Fetching all invoices...");
   };
 
+
+
+  function populateFormFields(data, action) {
+    console.log("data in populateForm :", data);
+
+    const {
+      billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo,
+      Gst, MotorNo, amount, hsn, invoiceDate, modelNo, ControllerNo, qty, rate,
+      tax, receivedAmount, balanceAmount
+    } = data;
+
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (action === "inner") {
+        console.log("in inner");
+        if (el) el.innerHTML = val || '';
+      } else {
+        console.log("in else");
+        if (el) el.value = val || '';
+      }
+    };
+
+const invoiceFormattedDate = new Date(invoiceDate).toISOString().split("T")[0]; // "2025-06-19"
+document.getElementById("invoiceDate").value = invoiceFormattedDate;
+
+
+    set('invoiceDate', invoiceFormattedDate);
+    set('bill-to-address', billTo);
+    set('bill-mobile', billMobile);
+    set('bill-pan', billPanNo);
+    set('bill-email', billEmail);
+    set('bill-aadhar', billAadhar);
+    set('Controller', ControllerNo);
+    set('modelNo', modelNo);
+    set('ChassisNo', ChassisNo);
+    set('MotorNo', MotorNo);
+    set('BatteryNo', BatteryNo);
+    set('hsn', hsn);
+    set('qty', qty);
+    set('rate', rate);
+    set('gst', Gst);
+    set('tax', tax);
+    set('amount', amount);
+    set('grandTotal', amount);
+    set('received', receivedAmount);
+    set('balance', balanceAmount);
+
+    const halfGst = Gst / 2;
+    set('taxableVal', amount);
+    set('gst1', halfGst.toFixed(2) + '%');
+    set('cgst', tax / 2);
+    set('sgstamt', tax / 2);
+    set('tax1', tax);
+
+    // In words
+    document.getElementById('inWords').innerText = numberToWords(amount);
+
+    // Status label
+    const statusLabel = document.getElementById('status');
+    if (statusLabel) {
+      statusLabel.style.display = "inline-block";
+      statusLabel.style.width = "100px";
+      statusLabel.style.padding = "6px 12px";
+      statusLabel.style.borderRadius = "6px";
+      statusLabel.style.fontWeight = "bold";
+      statusLabel.style.textAlign = "center";
+      statusLabel.style.color = "white";
+      statusLabel.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
+
+      if (balanceAmount != 0) {
+        statusLabel.innerText = "Pending";
+        statusLabel.style.backgroundColor = "#f39c12";
+      } else {
+        statusLabel.innerText = "Done";
+        statusLabel.style.backgroundColor = "#2ecc71";
+      }
+    }
+  }
+
+
+
+
   const fetchByInvoice = () => {
-
-
-    console.log("in fetcByInvoice");
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
-    console.log("Fetched invoice invoiceNumber :", invoiceNumber);
-    fetch(`https://script.google.com/macros/s/AKfycbxpnxuwxcpYdCBnSvoxtW5Ne_K0gd76qqql0ONuJG6N_fM_mrUz2bMLXjXw-4jtxcZGHg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          console.log("Invoice Data:", data.data);
-          const {
-            billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo, Gst, MotorNo, amount, hsn, invoiceDate, modelNo,ControllerNo, qty, rate, tax,receivedAmount,balanceAmount
-          } = data.data;
-
-
-
-          // Map values to form fields
-          document.getElementById('invoiceDate').value = invoiceDate || "";
-          document.getElementById('bill-to-address').value = billTo || "";
-          document.getElementById('bill-mobile').value = billMobile || "";
-          document.getElementById('bill-pan').value = billPanNo || "";
-          document.getElementById('bill-email').value = billEmail || "";
-          document.getElementById('bill-aadhar').value = billAadhar || "";
-
- document.getElementById('Controller').value = ControllerNo || "";
-          document.getElementById('modelNo').value = modelNo || "";
-          document.getElementById('ChassisNo').value = ChassisNo || "";
-          document.getElementById('MotorNo').value = MotorNo || "";
-          document.getElementById('BatteryNo').value = BatteryNo || "";
-          document.getElementById('hsn').value = hsn || "";
-          document.getElementById('qty').value = qty || "";
-          document.getElementById('rate').value = rate || "";
-          document.getElementById('gst').value = Gst || "";
-          document.getElementById('tax').value = tax || "";
-          document.getElementById('amount').value = amount || "";
-
-          document.getElementById('grandTotal').value = amount || "";
-          document.getElementById('received').value = receivedAmount || "";
-          document.getElementById('balance').value = balanceAmount || "";
-
-          var halftax=Gst/2;
-
-          document.getElementById('taxableVal').value = amount || "";
-          document.getElementById('gst1').value = (Gst / 2).toFixed(2) + "%" || "";
-          document.getElementById('cgst').value = tax/2 || "";
-          document.getElementById('sgstamt').value = tax/2 || "";
-          document.getElementById('tax1').value = tax || "";
-
-         // let word=numberToWords(amount);
-          document.getElementById('inWords').innerText = numberToWords(amount);
-          
-
-          console.log("half gst : " +halftax + " tax here "+tax/2 + ", nn " +tax/halftax)
-          // setShowEdit(true);
-          setShowControls(true);
-
-          const statusLabel = document.getElementById('status');
-
-// Apply base styles
-statusLabel.style.display = "inline-block";
-statusLabel.style.width = "100px";
-statusLabel.style.padding = "6px 12px";
-statusLabel.style.borderRadius = "6px";
-statusLabel.style.fontWeight = "bold";
-statusLabel.style.textAlign = "center";
-statusLabel.style.color = "white";
-statusLabel.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
-
-// Example balanceAmount variable
-//const balanceAmount = 100; // Change this to 0 to test "Done"
-
-if (balanceAmount !== 0) {
-  statusLabel.innerText = "Pending";
-  statusLabel.style.backgroundColor = "#f39c12"; // orange
-  console.log("Pending");
-} else {
-  statusLabel.innerText = "Done";
-  statusLabel.style.backgroundColor = "#2ecc71"; // green
-  console.log("Done");
-}
-
-
-// if(balanceAmount!== 0){
-//    document.getElementById('status').innerText = "Pending";
-//   console.log("Pending");
-// }else{
-//    document.getElementById('status').innerText = "Done";
-//    console.log("Done");
-// }
+          fetchedInvoiceData = data.data;  // ✅ Store in global object
+          populateFormFields(fetchedInvoiceData, "value"); // ✅ Reuse mapping function
+          setShowControls(true); // If you're using this in React
         } else {
-          console.warn("Not found:", data.message);
-          alert("Not found:", data.message);
+          alert("Not found: " + data.message);
+          document.getElementById("saveBtn").disabled = false;
+
         }
       })
       .catch(err => {
         console.error("Error fetching invoice:", err);
       });
+  };
 
 
+
+
+  const handleGetInvoice = () => {
+    document.getElementById("saveBtn").disabled = true;
+
+    setIsEditing(false);     // Initially in view mode
+    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
+    fetchByInvoice();
+
+    setShowControls(true);   // Show edit + cancel buttons
+
+
+  
 
   };
+
+  const handleEditClick = (e) => {
+    e.preventDefault();
+    setIsEditing(true);      // Switch to editing mode
+    setIsEditable(true);
+    populateFormFields(fetchedInvoiceData, "value");
+    document.getElementById('rate').innerHTML = fetchByInvoice.rate;
+
+  };
+
+  const handleUpdateClick = (e) => {
+    // e.preventDefault();
+    console.log("in update");
+    updateInvoice();
+    // You can add actual update logic here (e.g., sending data to Google Apps Script)
+    setIsEditing(false);     // Initially in view mode
+    setIsEditable(false);    // 🔐 Disable form until Edit is clicked
+    document.getElementById("saveBtn").disabled = true;
+
+  };
+
+  const handleCancelClick = () => {
+    window.location.reload(); // Reset everything
+  };
+
+
+
+
+  //   const fetchByInvoice = () => {
+
+
+  //     console.log("in fetcByInvoice");
+  //     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
+  //     console.log("Fetched invoice invoiceNumber :", invoiceNumber);
+  //     fetch(`https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         if (data.success) {
+  //           console.log("Invoice Data:", data.data);
+  //           const {
+  //             billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo, Gst, MotorNo, amount, hsn, invoiceDate, modelNo,ControllerNo, qty, rate, tax,receivedAmount,balanceAmount
+  //           } = data.data;
+
+
+
+  //           // Map values to form fields
+  //           document.getElementById('invoiceDate').value = invoiceDate || "";
+  //           document.getElementById('bill-to-address').value = billTo || "";
+  //           document.getElementById('bill-mobile').value = billMobile || "";
+  //           document.getElementById('bill-pan').value = billPanNo || "";
+  //           document.getElementById('bill-email').value = billEmail || "";
+  //           document.getElementById('bill-aadhar').value = billAadhar || "";
+
+  //  document.getElementById('Controller').value = ControllerNo || "";
+  //           document.getElementById('modelNo').value = modelNo || "";
+  //           document.getElementById('ChassisNo').value = ChassisNo || "";
+  //           document.getElementById('MotorNo').value = MotorNo || "";
+  //           document.getElementById('BatteryNo').value = BatteryNo || "";
+  //           document.getElementById('hsn').value = hsn || "";
+  //           document.getElementById('qty').value = qty || "";
+  //           document.getElementById('rate').value = rate || "";
+  //           document.getElementById('gst').value = Gst || "";
+  //           document.getElementById('tax').value = tax || "";
+  //           document.getElementById('amount').value = amount || "";
+
+  //           document.getElementById('grandTotal').value = amount || "";
+  //           document.getElementById('received').value = receivedAmount || "";
+  //           document.getElementById('balance').value = balanceAmount || "";
+
+  //           var halftax=Gst/2;
+
+  //           document.getElementById('taxableVal').value = amount || "";
+  //           document.getElementById('gst1').value = (Gst / 2).toFixed(2) + "%" || "";
+  //           document.getElementById('cgst').value = tax/2 || "";
+  //           document.getElementById('sgstamt').value = tax/2 || "";
+  //           document.getElementById('tax1').value = tax || "";
+
+  //          // let word=numberToWords(amount);
+  //           document.getElementById('inWords').innerText = numberToWords(amount);
+
+
+  //           console.log("half gst : " +halftax + " tax here "+tax/2 + ", nn " +tax/halftax)
+  //           // setShowEdit(true);
+  //           setShowControls(true);
+
+  //           const statusLabel = document.getElementById('status');
+
+  // // Apply base styles
+  // statusLabel.style.display = "inline-block";
+  // statusLabel.style.width = "100px";
+  // statusLabel.style.padding = "6px 12px";
+  // statusLabel.style.borderRadius = "6px";
+  // statusLabel.style.fontWeight = "bold";
+  // statusLabel.style.textAlign = "center";
+  // statusLabel.style.color = "white";
+  // statusLabel.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
+
+  // // Example balanceAmount variable
+  // //const balanceAmount = 100; // Change this to 0 to test "Done"
+
+  // if (balanceAmount !== 0) {
+  //   statusLabel.innerText = "Pending";
+  //   statusLabel.style.backgroundColor = "#f39c12"; // orange
+  //   console.log("Pending");
+  // } else {
+  //   statusLabel.innerText = "Done";
+  //   statusLabel.style.backgroundColor = "#2ecc71"; // green
+  //   console.log("Done");
+  // }
+
+
+  // // if(balanceAmount!== 0){
+  // //    document.getElementById('status').innerText = "Pending";
+  // //   console.log("Pending");
+  // // }else{
+  // //    document.getElementById('status').innerText = "Done";
+  // //    console.log("Done");
+  // // }
+  //         } else {
+  //           console.warn("Not found:", data.message);
+  //           alert("Not found:", data.message);
+  //         }
+  //       })
+  //       .catch(err => {
+  //         console.error("Error fetching invoice:", err);
+  //       });
+
+
+
+  //   };
 
 
   useEffect(() => {
@@ -365,6 +537,35 @@ if (balanceAmount !== 0) {
     });
 
     fetchLatestInvoiceNumber();
+
+    //get by Invoive Button dissable
+    
+  const input = document.getElementById("getinvoiceNumber");
+  const button = document.getElementById("getByInvoice");
+
+  console.log("btn:", button);
+
+  if (button && input) {
+    // Set initial style and disable button
+    button.disabled = true;
+    button.style.backgroundColor = "#ccc";
+    button.style.cursor = "not-allowed";
+
+    // Input event listener
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        button.disabled = false;
+        button.style.backgroundColor = "#0275d8";
+        button.style.cursor = "pointer";
+      } else {
+        button.disabled = true;
+        button.style.backgroundColor = "#ccc";
+        button.style.cursor = "not-allowed";
+      }
+    });
+  }
+
+
   }, []);
 
   return (
@@ -372,7 +573,7 @@ if (balanceAmount !== 0) {
       <div className="button-group">
         <button id="saveBtn">Save</button>
         <button onClick={() => window.print()}>Print</button>
-        <label id="status" style={{ width:'100px' }}></label>
+        <label id="status" style={{ width: '100px' }}></label>
         {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
       </div>
 
@@ -386,7 +587,7 @@ if (balanceAmount !== 0) {
           </p>
         </div>
 
-        
+
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <input
@@ -503,7 +704,7 @@ if (balanceAmount !== 0) {
               <label htmlFor="invoiceDate">Date:</label>
             </div>
             <div className="invoice-item">
-              <input type="date" id="invoiceDate" defaultValue="2025-05-30" />
+              <input type="date" id="invoiceDate"  />
             </div>
           </div>
         </div>
@@ -555,7 +756,8 @@ if (balanceAmount !== 0) {
 
         borderRadius: '5px',
       }}>
-        <RateInput />
+        {/* <RateInput /> */}
+        <RateInput initialData={fetchedInvoiceData} />
       </div>
 
       <p style={{ display: "flex", margin: 0 }}>
