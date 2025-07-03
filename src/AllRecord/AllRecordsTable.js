@@ -25,7 +25,37 @@ const AllRecordsTable = () => {
 // qty: "1"
 // rate: "545466"
 // tax: "54546.60"
-  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo','ControllerNo', 'hsn', 'qty', 'rate','Gst','tax','amount','companyAddress'];
+
+
+
+const columnHeaders = {
+  invoiceNumber: "Invoice #",
+  billTo: "Customer Name",
+  Date: "Date",
+  billMobile: "Mobile",
+  billEmail: "Email",
+  billPan: "PAN",
+  billAadhar: "Aadhar",
+  modelNo: "Model No",
+  ChassisNo: "Chassis No",
+  MotorNo: "Motor No",
+  BatteryNo: "Battery No",
+  ControllerNo: "Controller No",
+  hsn: "HSN Code",
+  qty: "Qty",
+  rate: "Rate",
+  Gst: "GST %",
+  tax: "Tax ₹",
+  amount: "Amount ₹",
+  receivedAmount: "Received ₹",
+  balanceAmount: "Balance ₹",
+  companyAddress: "Company Address",
+};
+
+
+
+
+  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo','ControllerNo', 'hsn', 'qty', 'rate','Gst','tax','amount','receivedAmount','balanceAmount','companyAddress'];
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -70,35 +100,14 @@ const AllRecordsTable = () => {
         <p>No records found.</p>
       ) : (
         <div className="overflow-x-auto border rounded shadow max-h-[80vh]">
-          {/* <table className="w-full table-auto bg-white border border-gray-300">
-            <thead className="bg-gray-100 sticky top-0 z-10">
-              <tr>
-                {Object.keys(records[0]).map((key) => (
-                  <th key={key} className="py-2 px-4 border-b text-left whitespace-nowrap">
-                    {key}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {records.map((record, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  {Object.values(record).map((val, i) => (
-                    <td key={i} className="py-2 px-4 border-b whitespace-nowrap">{val}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
+       
 
-
-
-<table className="min-w-full">
+{/* <table className="min-w-full">
   <thead>
     <tr>
       {visibleColumns.map((key) => (
         <th key={key} className="py-2 px-4 border-b text-left whitespace-nowrap">
-          {key}
+          {columnHeaders[key] || key}
         </th>
       ))}
     </tr>
@@ -108,7 +117,36 @@ const AllRecordsTable = () => {
       <tr key={index}>
         {visibleColumns.map((key) => (
           <td key={key} className="py-2 px-4 border-b whitespace-nowrap">
-            {record[key]}
+          
+             {key === "Date"
+      ? new Date(record[key]).toISOString().split("T")[0] 
+      : record[key]}
+          </td>
+        ))}
+      </tr>
+    ))}
+  </tbody>
+</table> */}
+
+<table className="min-w-full">
+  <thead>
+    <tr>
+      {visibleColumns.map((key) => (
+        <th key={key} className="py-2 px-4 border-b text-left whitespace-nowrap" style={{ width: "120px", minWidth: "90px", maxWidth: "120px" }}>
+          {columnHeaders[key] || key}
+        </th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {records.map((record, index) => (
+      <tr key={index}>
+        {visibleColumns.map((key) => (
+          <td key={key} className="py-2 px-4 border-b whitespace-nowrap">
+          
+             {key === "Date"
+      ? new Date(record[key]).toISOString().split("T")[0] 
+      : record[key]}
           </td>
         ))}
       </tr>

@@ -266,7 +266,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
               {/* Model No: <input id="modelNo" type="text" /><br />
               Chassis No: <input id="ChassisNo" type="text" /><br /> */}
               Motor No: <input id="MotorNo" type="text" /><br />
-              Battery No: <input id="BatteryNo" type="text" />
+              Battery No. , Charger No.: <input id="BatteryNo" type="text" />
               <div class="form-row">
   <label for="Controller">Controller No:</label>
   <input id="Controller" type="text" />

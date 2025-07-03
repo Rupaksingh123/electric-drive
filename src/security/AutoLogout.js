@@ -1,52 +1,11 @@
-// // src/security/AutoLogout.js
-
-// import { useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-
-// const AutoLogout = () => {
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const loginTime = localStorage.getItem('loginTime');
-//     const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-//     if (isLoggedIn && loginTime) {
-//       const now = Date.now();
-//       const sessionDuration = now - parseInt(loginTime);
-//       const maxSession = 1 * 60 * 1000; // 15 minutes  min/sec/ms
-
-//       if (sessionDuration > maxSession) {
-//         // Expired: clear and redirect
-//         localStorage.removeItem('isLoggedIn');
-//         localStorage.removeItem('loginTime');
-//         //alert('Session expired. You have been logged out.');
-//         // navigate('/login');
-//          navigate('/login?sessionExpired=true');
-//       } else {
-//         // Still active: set timeout for remaining time
-//         const timeout = setTimeout(() => {
-//           localStorage.removeItem('isLoggedIn');
-//           localStorage.removeItem('loginTime');
-//           alert('Session expired. You have been logged out.');
-//           navigate('/login');
-//         }, maxSession - sessionDuration);
-
-//         return () => clearTimeout(timeout);
-//       }
-//     }
-//   }, []);
-
-//   return null; // Nothing rendered
-// };
-
-// export default AutoLogout;
 
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 //(maxSessionTime = 15 * 60 * 1000)
-const AutoLogout = (maxSessionTime = 10 * 60 * 1000) => {
+const AutoLogout = (maxSessionTime = 15 * 60 * 1000) => {
   const [timeLeft, setTimeLeft] = useState(null); // ms
+  const [refreshTrigger, setRefreshTrigger] = useState(0); // 🔁 trigger re-check
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,7 +15,8 @@ const AutoLogout = (maxSessionTime = 10 * 60 * 1000) => {
     if (!isLoggedIn || !loginTime) return;
 
     const interval = setInterval(() => {
-      const elapsed = Date.now() - Number(loginTime);
+     // const elapsed = Date.now() - Number(loginTime);
+     const elapsed = Date.now() - Number(localStorage.getItem('loginTime')); // 👈 always read fresh value
       const remaining = maxSessionTime - elapsed;
       setTimeLeft(remaining);
 
@@ -70,9 +30,18 @@ const AutoLogout = (maxSessionTime = 10 * 60 * 1000) => {
     }, 1000); // update every 1s
 
     return () => clearInterval(interval);
-  }, [navigate, maxSessionTime]);
+  }, //[navigate, maxSessionTime]);
+  [navigate, maxSessionTime, refreshTrigger]); // 👈 watch `refreshTrigger`
 
-  return timeLeft;
+
+   const refreshSession = () => {
+    const newLoginTime = Date.now();
+    localStorage.setItem('loginTime', newLoginTime.toString());
+    setRefreshTrigger((prev) => prev + 1); // 🔁 trigger interval to re-run
+  };
+
+  // return timeLeft;
+  return { timeLeft, setTimeLeft,refreshSession  };
 };
 
 export default AutoLogout;
