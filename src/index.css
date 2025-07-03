@@ -93,6 +93,9 @@ button {
   footer,
   #getByInvoice,
   #getinvoiceNumber
+  #editButton ,
+  #updateButton ,
+  #cancelButton
  {
     display: none !important;
   }

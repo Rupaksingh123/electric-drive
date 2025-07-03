@@ -615,7 +615,7 @@ document.getElementById("invoiceDate").value = invoiceFormattedDate;
           {showControls && (
             <>
               {!isEditing ? (
-                <button
+                <button id="editButton"
                   onClick={handleEditClick}
                   style={{
                     backgroundColor: '#f0ad4e',
@@ -626,7 +626,7 @@ document.getElementById("invoiceDate").value = invoiceFormattedDate;
                   Edit
                 </button>
               ) : (
-                <button
+                <button id="updateButton"
                   onClick={handleUpdateClick}
                   style={{
                     backgroundColor: '#5cb85c',
@@ -638,7 +638,7 @@ document.getElementById("invoiceDate").value = invoiceFormattedDate;
                 </button>
               )}
 
-              <button
+              <button id="cancelButton"
                 onClick={handleCancelClick}
                 style={{
                   backgroundColor: '#d9534f',
