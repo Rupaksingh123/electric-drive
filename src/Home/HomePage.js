@@ -324,7 +324,8 @@ document.getElementById("invoiceDate").value = invoiceFormattedDate;
 
     const halfGst = Gst / 2;
     set('taxableVal', amount);
-    set('gst1', halfGst.toFixed(2) + '%');
+    set('cgst1', halfGst.toFixed(2) + '%');
+    set('sgst1', halfGst.toFixed(2) + '%');
     set('cgst', tax / 2);
     set('sgstamt', tax / 2);
     set('tax1', tax);
