@@ -365,11 +365,14 @@ document.getElementById("invoiceDate").value = invoiceFormattedDate;
       .then(data => {
         if (data.success) {
           fetchedInvoiceData = data.data;  // ✅ Store in global object
+          document.getElementById("invoiceNumber").value = fetchedInvoiceData.invoiceNumber;
           populateFormFields(fetchedInvoiceData, "value"); // ✅ Reuse mapping function
           setShowControls(true); // If you're using this in React
         } else {
+          setShowControls(false);   // hide edit + cancel buttons
           alert("Not found: " + data.message);
           document.getElementById("saveBtn").disabled = false;
+
 
         }
       })
