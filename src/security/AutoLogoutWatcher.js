@@ -25,7 +25,7 @@ const seconds1 = minutes % 60;
 
 
     {console.log("timeLeft: " + minutes + "m " + seconds1 + "s")}
-      {seconds !== null && seconds <= 60 && (
+      {seconds !== null && seconds > 0 &&  seconds <= 60 && (
         <div className="text-red-500 text-center no-print">
           Session expires in {seconds} second{seconds !== 1 ? 's' : ''}.
           <button
