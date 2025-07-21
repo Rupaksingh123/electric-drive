@@ -8,10 +8,26 @@ let fetchedInvoiceData = {}; // Stores latest fetched data
 
 const HomePage = () => {
 
+
+  const [isSaveEnabled, setIsSaveEnabled] = useState(false);
+  const [billAddress, setBillAddress] = useState('');
+
+  const handleBillAddressChange = (e) => {
+    const value = e.target.value.trim();
+    setBillAddress(value);
+     setIsSaveEnabled(value !== '');
+
+     
+  };
+
+
+
   const [isEditable, setIsEditable] = useState(true);
   const [showEditButtons, setShowEditButtons] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
+
+  
 
   const monitorInternetConnection = () => {
     window.addEventListener('online', () => alert('Back online'));
@@ -425,7 +441,7 @@ const HomePage = () => {
   return (
     <div style={{ maxWidth: '800px' }}>
       <div className="button-group">
-        <button id="saveBtn">Save</button>
+        <button id="saveBtn"  disabled={!isSaveEnabled} >Save</button>
         <button onClick={() => window.print()}>Print</button>
         <label id="status" style={{ width: '100px' }}></label>
         {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
@@ -572,7 +588,15 @@ const HomePage = () => {
         <div className="left-div">
           <div className="contact-item">
             <label style={{ width: "65px" }}>Bill To: </label>
-            <textarea id="bill-to-address" style={{ width: "100%" }}></textarea>
+            {/* <textarea id="bill-to-address" style={{ width: "100%" }}></textarea> */}
+              <textarea
+        id="bill-to-address"
+        style={{ width: "100%" }}
+        value={billAddress}
+        onChange={handleBillAddressChange}
+      ></textarea>
+
+
           </div>
           <div className="contact-info">
             <div className="contact-item">
