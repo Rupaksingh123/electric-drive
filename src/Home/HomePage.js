@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RateInput from "../Input/RateInput";
 import { numberToWords } from '../utils/numberToWords';
+import html2pdf from 'html2pdf.js';
+
 
 let fetchedInvoiceData = {}; // Stores latest fetched data
+
 
 
 
@@ -74,7 +77,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -126,13 +129,67 @@ const HomePage = () => {
       })
       .catch(error => {
         console.error("Fetch failed:", error.message || error);
-        alert("Fetch Error: " + error.message);
+       // alert("Fetch Error: " + error.message);
       });
 
     alert('Invoice saved locally.');
 
 
   };
+
+
+
+const downloadPDF = () => {
+  const element = document.getElementById("root"); // your printable content
+const invoiceNumber= document.getElementById('invoiceNumber').value;
+  if (!element) {
+    alert("Invoice content is not available yet.");
+    return;
+  }
+
+  // 🔻 Step 1: Hide unwanted elements
+  const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn');
+  elementsToHide.forEach(el => el.style.display = 'none');
+
+  // ✅ Step 2: Force opacity of .container to 1
+  const containerEls = element.querySelectorAll(".container");
+  const originalOpacities = [];
+  containerEls.forEach(el => {
+    originalOpacities.push(el.style.opacity); // store original
+    el.style.opacity = "1";
+  });
+
+  // 🔄 Step 3: Generate PDF
+  const options = {
+    margin: 0.2,
+    // filename: `invoice_${Date.now()}.pdf`,
+    filename: `Invoice_${invoiceNumber}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.pdf`,
+
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(options).from(element).save()
+    .then(() => {
+      // ✅ Step 4: Restore hidden elements
+      elementsToHide.forEach(el => el.style.display = '');
+
+      // ✅ Step 5: Restore original container opacity
+      containerEls.forEach((el, index) => {
+        el.style.opacity = originalOpacities[index] || '';
+      });
+    })
+    .catch(err => {
+      alert("PDF export failed");
+      elementsToHide.forEach(el => el.style.display = '');
+      containerEls.forEach((el, index) => {
+        el.style.opacity = originalOpacities[index] || '';
+      });
+    });
+};
+
+
 
 
   const updateInvoice = () => {
@@ -163,7 +220,7 @@ const HomePage = () => {
       received: document.getElementById('received').value,
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -233,7 +290,7 @@ const HomePage = () => {
     }
 
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -344,7 +401,7 @@ const HomePage = () => {
 
   const fetchByInvoice = () => {
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
-    fetch(`https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {
@@ -400,7 +457,10 @@ const HomePage = () => {
 
     document.getElementById("saveBtn").addEventListener("click", () => {
       if (navigator.onLine) {
-        saveInvoice();
+        //saveInvoice();
+         saveInvoice(); // save your invoice (e.g., to Google Sheet or DB)
+         //downloadPDF();
+   // window.print();      // then open the print dialog (you can save as PDF)
       } else {
         alert("No internet");
       }
@@ -442,7 +502,7 @@ const HomePage = () => {
     <div style={{ maxWidth: '800px' }}>
       <div className="button-group">
         <button id="saveBtn"  disabled={!isSaveEnabled} >Save</button>
-        <button onClick={() => window.print()}>Print</button>
+        <button onClick={downloadPDF}>Download Pdf</button>
         <label id="status" style={{ width: '100px' }}></label>
         {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
       </div>
@@ -459,7 +519,7 @@ const HomePage = () => {
 
 
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div class="no-print" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <input
             id="getinvoiceNumber"
             placeholder="ED/25-26/"
