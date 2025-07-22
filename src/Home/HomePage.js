@@ -727,7 +727,7 @@ const invoiceNumber= document.getElementById('invoiceNumber').value;
               2. Goods once sold will not be taken back or exchanged<br />
               3. All disputes are subject to NALANDA jurisdiction only
             </td>
-            <td style={{ verticalAlign: "bottom", textAlign: "center", height: "100px" }}>
+            <td style={{ verticalAlign: "bottom", textAlign: "center", height: "100px",width: "213px" }}>
               <p style={{ margin: 0 }}>
                 Authorised Signatory<br />
                 <strong>ELECTRIC DRIVE</strong>
