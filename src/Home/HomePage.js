@@ -13,15 +13,26 @@ const HomePage = () => {
 
 
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
-  const [billAddress, setBillAddress] = useState('');
+ // const [billAddress, setBillAddress] = useState('');
+    const [billAddress, setBillAddress] = useState('');
+
+
+  // const handleBillAddressChange = (e) => {
+  //   const value = e.target.value.trim();
+  //   setBillAddress(value);
+  //    setIsSaveEnabled(value !== '');
+
+     
+  // };
 
   const handleBillAddressChange = (e) => {
     const value = e.target.value.trim();
-    setBillAddress(value);
-     setIsSaveEnabled(value !== '');
+    console.log("value : " +value);
+  //setBillAddress(e.target.value);
+  setBillAddress(value);
+  setIsSaveEnabled(value !== '');
+};
 
-     
-  };
 
 
 
@@ -139,55 +150,237 @@ const HomePage = () => {
 
 
 
-const downloadPDF = () => {
-  const element = document.getElementById("root"); // your printable content
-const invoiceNumber= document.getElementById('invoiceNumber').value;
+// const downloadPDF = () => {
+//   const element = document.getElementById("root"); // your printable content
+// const invoiceNumber= document.getElementById('invoiceNumber').value;
+//   if (!element) {
+//     alert("Invoice content is not available yet.");
+//     return;
+//   }
+
+//   // 🔻 Step 1: Hide unwanted elements
+//   const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn');
+//   elementsToHide.forEach(el => el.style.display = 'none');
+
+//   // ✅ Step 2: Force opacity of .container to 1
+//   const containerEls = element.querySelectorAll(".container");
+//   const originalOpacities = [];
+//   containerEls.forEach(el => {
+//     originalOpacities.push(el.style.opacity); // store original
+//     el.style.opacity = "1";
+//   });
+
+//   // 🔄 Step 3: Generate PDF
+//   const options = {
+//     margin: 0.2,
+//     // filename: `invoice_${Date.now()}.pdf`,
+//     filename: `Invoice_${invoiceNumber}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.pdf`,
+
+//     image: { type: 'jpeg', quality: 1 },
+//     html2canvas: { scale: 2, useCORS: true },
+//     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+//   };
+
+//   html2pdf().set(options).from(element).save()
+//     .then(() => {
+//       // ✅ Step 4: Restore hidden elements
+//       elementsToHide.forEach(el => el.style.display = '');
+
+//       // ✅ Step 5: Restore original container opacity
+//       containerEls.forEach((el, index) => {
+//         el.style.opacity = originalOpacities[index] || '';
+//       });
+//     })
+//     .catch(err => {
+//       alert("PDF export failed");
+//       elementsToHide.forEach(el => el.style.display = '');
+//       containerEls.forEach((el, index) => {
+//         el.style.opacity = originalOpacities[index] || '';
+//       });
+//     });
+// };
+
+function downloadPDF(mode = "download") {
+  const element = document.getElementById("root");
   if (!element) {
     alert("Invoice content is not available yet.");
     return;
   }
 
   // 🔻 Step 1: Hide unwanted elements
-  const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn');
-  elementsToHide.forEach(el => el.style.display = 'none');
+  const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn, #getByInoviceDiv');
+  const hiddenElements = [];
+  elementsToHide.forEach(el => {
+    hiddenElements.push({ el, display: el.style.display });
+    el.style.display = 'none';
+  });
 
-  // ✅ Step 2: Force opacity of .container to 1
+  // 🔻 Step 2: Temporarily modify textarea style
+  const billTo = document.getElementById("bill-to-address");
+  let originalTextareaStyle = null;
+
+  if (billTo) {
+    originalTextareaStyle = {
+      height: billTo.style.height,
+      overflow: billTo.style.overflow,
+      resize: billTo.style.resize,
+      whiteSpace: billTo.style.whiteSpace,
+      textOverflow: billTo.style.textOverflow
+    };
+
+    billTo.style.height = '2.8em';
+    billTo.style.overflow = 'hidden';
+    billTo.style.resize = 'none';
+    billTo.style.whiteSpace = 'nowrap';
+    billTo.style.textOverflow = 'ellipsis';
+  }
+
+  // 🔻 Step 3: Force opacity of .container to 1 (if needed)
   const containerEls = element.querySelectorAll(".container");
   const originalOpacities = [];
   containerEls.forEach(el => {
-    originalOpacities.push(el.style.opacity); // store original
+    originalOpacities.push(el.style.opacity);
     el.style.opacity = "1";
   });
 
-  // 🔄 Step 3: Generate PDF
+  // 🔄 Step 4: Generate PDF
   const options = {
     margin: 0.2,
-    // filename: `invoice_${Date.now()}.pdf`,
-    filename: `Invoice_${invoiceNumber}_${new Date().toLocaleDateString('en-GB').replace(/\//g, '-')}.pdf`,
-
     image: { type: 'jpeg', quality: 1 },
     html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(options).from(element).save()
-    .then(() => {
-      // ✅ Step 4: Restore hidden elements
-      elementsToHide.forEach(el => el.style.display = '');
+  const worker = html2pdf().set(options).from(element).toPdf();
 
-      // ✅ Step 5: Restore original container opacity
-      containerEls.forEach((el, index) => {
-        el.style.opacity = originalOpacities[index] || '';
-      });
-    })
-    .catch(err => {
-      alert("PDF export failed");
-      elementsToHide.forEach(el => el.style.display = '');
-      containerEls.forEach((el, index) => {
-        el.style.opacity = originalOpacities[index] || '';
-      });
+  if (mode === "print") {
+    worker.outputPdf('bloburl').then((blobUrl) => {
+      const printWindow = window.open(blobUrl);
+      if (printWindow) {
+        printWindow.addEventListener('load', () => {
+          printWindow.focus();
+          printWindow.print();
+        });
+      }
     });
-};
+  } else {
+    worker.save(`invoice_${Date.now()}.pdf`);
+  }
+
+  // ✅ Step 5: Restore everything after export
+  worker.then(() => {
+    hiddenElements.forEach(({ el, display }) => {
+      el.style.display = display || '';
+    });
+
+    containerEls.forEach((el, index) => {
+      el.style.opacity = originalOpacities[index] || '';
+    });
+
+    if (billTo && originalTextareaStyle) {
+      Object.assign(billTo.style, originalTextareaStyle);
+    }
+  }).catch(() => {
+    alert("PDF export failed.");
+
+    hiddenElements.forEach(({ el, display }) => {
+      el.style.display = display || '';
+    });
+
+    containerEls.forEach((el, index) => {
+      el.style.opacity = originalOpacities[index] || '';
+    });
+
+    if (billTo && originalTextareaStyle) {
+      Object.assign(billTo.style, originalTextareaStyle);
+    }
+  });
+}
+
+
+
+// const downloadPDF = (mode = "download") => {
+//   const element = document.getElementById("root"); // your printable content
+
+//   if (!element) {
+//     alert("Invoice content is not available yet.");
+//     return;
+//   }
+
+//   // 🔻 Step 1: Hide unwanted elements
+//   const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn, #getByInoviceDiv');
+//   elementsToHide.forEach(el => el.style.display = 'none');
+
+//   // 🔻 Step 2: Force opacity of .container to 1
+//   const containerEls = element.querySelectorAll(".container");
+//   const originalOpacities = [];
+//   containerEls.forEach(el => {
+//     originalOpacities.push(el.style.opacity);
+//     el.style.opacity = "1";
+//   });
+
+//   // 🔻 Step 2.5: Limit textarea height for PDF only
+// const billToTextareas = element.querySelectorAll('#bill-to-address');
+// const originalStyles = [];
+
+// billToTextareas.forEach((el) => {
+//   originalStyles.push({
+//     el,
+//     height: el.style.height,
+//     overflow: el.style.overflow,
+//     resize: el.style.resize,
+//   });
+
+//   el.style.height = '2.8em';
+//   el.style.overflow = 'hidden';
+//   el.style.resize = 'none';
+// });
+
+
+//   // 🔄 Step 3: Generate PDF with html2pdf
+//   const options = {
+//     margin: 0.2,
+//     image: { type: 'jpeg', quality: 1 },
+//     html2canvas: { scale: 2, useCORS: true },
+//     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+//   };
+
+//   const worker = html2pdf().set(options).from(element).toPdf();
+
+//   if (mode === "print") {
+//     worker.outputPdf('bloburl').then((blobUrl) => {
+//       const printWindow = window.open(blobUrl);
+//       if (printWindow) {
+//         printWindow.addEventListener('load', () => {
+//           printWindow.focus();
+//           printWindow.print();
+//         });
+//       }
+//     });
+//   } else {
+//     worker.save(`invoice_${Date.now()}.pdf`);
+//   }
+
+//   // ✅ Step 4: Restore hidden elements and opacity
+//   worker.then(() => {
+//     elementsToHide.forEach(el => el.style.display = '');
+//     containerEls.forEach((el, index) => {
+//       el.style.opacity = originalOpacities[index] || '';
+//     });
+//     originalStyles.forEach(({ el, height, overflow, resize }) => {
+//   el.style.height = height;
+//   el.style.overflow = overflow;
+//   el.style.resize = resize;
+// });
+
+//   }).catch(err => {
+//     alert("PDF export failed");
+//     elementsToHide.forEach(el => el.style.display = '');
+//     containerEls.forEach((el, index) => {
+//       el.style.opacity = originalOpacities[index] || '';
+//     });
+//   });
+// };
 
 
 
@@ -452,6 +645,35 @@ const invoiceNumber= document.getElementById('invoiceNumber').value;
     window.location.reload(); // Reset everything
   };
 
+  
+  function printPage() {
+    // Temporarily adjust the textarea style before printing
+    const billTo = document.getElementById('bill-to-address');
+    const originalHeight = billTo.style.height;
+    const originalOverflow = billTo.style.overflow;
+
+    billTo.style.height = '2.8em';        // ~2 lines
+    billTo.style.overflow = 'hidden';
+    billTo.style.whiteSpace = 'pre-wrap';
+    billTo.style.resize = 'none';
+    billTo.style.lineHeight = '1.4';
+    billTo.style.display = 'block';
+    billTo.style.textAlign = 'left';
+
+    // Trigger print
+    window.print();
+
+    // Revert style after printing
+    setTimeout(() => {
+      billTo.style.height = originalHeight;
+      billTo.style.overflow = originalOverflow;
+    }, 1000); // small delay to allow print dialog
+  }
+
+
+
+
+
   useEffect(() => {
     monitorInternetConnection();
 
@@ -502,7 +724,10 @@ const invoiceNumber= document.getElementById('invoiceNumber').value;
     <div style={{ maxWidth: '800px' }}>
       <div className="button-group">
         <button id="saveBtn"  disabled={!isSaveEnabled} >Save</button>
+        <button class="no-print" onClick={printPage}>Print</button>
+
         <button onClick={downloadPDF}>Download Pdf</button>
+
         <label id="status" style={{ width: '100px' }}></label>
         {/* <button id="getAll" onClick={getAllInvoices}>Get All records</button> */}
       </div>
@@ -648,11 +873,13 @@ const invoiceNumber= document.getElementById('invoiceNumber').value;
         <div className="left-div">
           <div className="contact-item">
             <label style={{ width: "65px" }}>Bill To: </label>
-            {/* <textarea id="bill-to-address" style={{ width: "100%" }}></textarea> */}
+            {/* <textarea id="bill-to-address1"  style={{ width: "100%" }}  onChange={handleBillAddressChange}></textarea> */}
+            {/* <textarea id="bill-to-address" style={{ width: "100%" }} value={billAddress} onChange={handleBillAddressChange} ></textarea> */}
+
               <textarea
         id="bill-to-address"
         style={{ width: "100%" }}
-        value={billAddress}
+        // value={billAddress}
         onChange={handleBillAddressChange}
       ></textarea>
 
