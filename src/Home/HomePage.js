@@ -13,23 +13,16 @@ const HomePage = () => {
 
 
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
- // const [billAddress, setBillAddress] = useState('');
+ 
     const [billAddress, setBillAddress] = useState('');
 
 
-  // const handleBillAddressChange = (e) => {
-  //   const value = e.target.value.trim();
-  //   setBillAddress(value);
-  //    setIsSaveEnabled(value !== '');
-
-     
-  // };
-
   const handleBillAddressChange = (e) => {
+
     const value = e.target.value.trim();
-    console.log("value : " +value);
-  //setBillAddress(e.target.value);
-  setBillAddress(value);
+    console.log("value : " +fetchedInvoiceData.billTo);
+  setBillAddress(e.target.value);
+
   setIsSaveEnabled(value !== '');
 };
 
@@ -220,6 +213,18 @@ function downloadPDF(mode = "download") {
   let originalTextareaStyle = null;
 
   if (billTo) {
+   
+
+ billTo.style.height = '2.8em';                // ~2 lines depending on font
+  billTo.style.overflow = 'hidden';
+  billTo.style.whiteSpace = 'pre-wrap';         // ✅ allows wrapping
+  billTo.style.resize = 'none';
+  billTo.style.lineHeight = '1.4';
+  billTo.style.fontSize = '12px';               // optional, to fit more content
+  billTo.style.wordBreak = 'break-word';        // ✅ ensures word breaking if long words
+
+
+
     originalTextareaStyle = {
       height: billTo.style.height,
       overflow: billTo.style.overflow,
@@ -228,11 +233,7 @@ function downloadPDF(mode = "download") {
       textOverflow: billTo.style.textOverflow
     };
 
-    billTo.style.height = '2.8em';
-    billTo.style.overflow = 'hidden';
-    billTo.style.resize = 'none';
-    billTo.style.whiteSpace = 'nowrap';
-    billTo.style.textOverflow = 'ellipsis';
+    
   }
 
   // 🔻 Step 3: Force opacity of .container to 1 (if needed)
@@ -389,8 +390,6 @@ function downloadPDF(mode = "download") {
 
     const invoiceData = {
       invoiceNumber: document.getElementById('getinvoiceNumber').value,
-      // gstin: document.getElementById('gstin').value,
-      // email: document.getElementById('bill-email').value,
       billTo: document.getElementById('bill-to-address').value,
       billPan: document.getElementById('bill-pan').value,
       billAadhar: document.getElementById('bill-aadhar').value,
@@ -400,7 +399,6 @@ function downloadPDF(mode = "download") {
       amount: document.getElementById('amount').value,
       balanceAmount: document.getElementById('balance').value,
 
-      //invoiceDate: document.getElementById('invoiceDate').value,
       billMobile: document.getElementById('bill-mobile').value,
       billEmail: document.getElementById('bill-email').value,
       MotorNo: document.getElementById('MotorNo').value,
@@ -422,8 +420,6 @@ function downloadPDF(mode = "download") {
       body: new URLSearchParams({
         mode: "updateInvoice",
         invoiceNumber: invoiceData.invoiceNumber,
-        // gstin: invoiceData.gstin,
-        // email: invoiceData.email,
         billTo: invoiceData.billTo,
         billPan: invoiceData.billPan,
         billAadhar: invoiceData.billAadhar,
@@ -518,10 +514,10 @@ function downloadPDF(mode = "download") {
     const set = (id, val) => {
       const el = document.getElementById(id);
       if (action === "inner") {
-        console.log("in inner");
+        console.log("in inner "+el +" val "+val);
         if (el) el.innerHTML = val || '';
       } else {
-        console.log("in else");
+        console.log("in else" +el +" val "+val);
         if (el) el.value = val || '';
       }
     };
@@ -624,6 +620,7 @@ function downloadPDF(mode = "download") {
   };
 
   const handleEditClick = (e) => {
+    console.log("Edit clicked");
     e.preventDefault();
     setIsEditing(true);      // Switch to editing mode
     setIsEditable(true);
@@ -879,7 +876,7 @@ function downloadPDF(mode = "download") {
               <textarea
         id="bill-to-address"
         style={{ width: "100%" }}
-        // value={billAddress}
+         value={billAddress}
         onChange={handleBillAddressChange}
       ></textarea>
 
