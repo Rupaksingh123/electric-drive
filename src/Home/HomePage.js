@@ -556,7 +556,7 @@ function downloadPDF(mode = "download") {
     set('balance', balanceAmount);
 
     const halfGst = Gst / 2;
-    set('taxableVal', amount);
+    set('taxableVal', rate);
     set('cgst1', halfGst.toFixed(2) + '%');
     set('sgst1', halfGst.toFixed(2) + '%');
     set('cgst', tax / 2);
