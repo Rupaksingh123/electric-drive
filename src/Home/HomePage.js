@@ -947,9 +947,16 @@ function downloadPDF(mode = "download") {
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>
               <strong>Terms and Conditions:</strong><br />
-              1. Motor,Charger, Controller - One Year Warranty , Battery - 15 Month Warranty<br />
+              1. Moter, Charger, Controller -One year Warranty ,Battery – 15 Months Warranty. The responsibility of the warranty will be of the Company.<br />
               2. Goods once sold will not be taken back or exchanged<br />
-              3. All disputes are subject to NALANDA jurisdiction only
+              3. All legal dispute shall not lie with Seller, Subject to Company jurisdiction only.
+              
+
+
+
+
+
+
             </td>
             <td style={{ verticalAlign: "bottom", textAlign: "center", height: "100px",width: "213px" }}>
               <p style={{ margin: 0 }}>
