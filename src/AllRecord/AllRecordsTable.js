@@ -61,10 +61,11 @@ const columnHeaders = {
 
   //king
   // const API_URL =
-  //   "https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=allrecords";
-
+  //"https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=allrecords";
+//Main 
+//https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec
 const API_URL =
-    "https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec?mode=allrecords";
+    "https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?mode=allrecords";
 
 
   useEffect(() => {

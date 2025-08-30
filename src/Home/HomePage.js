@@ -81,7 +81,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -411,7 +411,7 @@ function downloadPDF(mode = "download") {
       received: document.getElementById('received').value,
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -479,7 +479,7 @@ function downloadPDF(mode = "download") {
     }
 
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -556,7 +556,7 @@ function downloadPDF(mode = "download") {
     set('balance', balanceAmount);
 
     const halfGst = Gst / 2;
-    set('taxableVal', amount);
+    set('taxableVal', rate);
     set('cgst1', halfGst.toFixed(2) + '%');
     set('sgst1', halfGst.toFixed(2) + '%');
     set('cgst', tax / 2);
@@ -590,7 +590,7 @@ function downloadPDF(mode = "download") {
 
   const fetchByInvoice = () => {
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
-    fetch(`https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {

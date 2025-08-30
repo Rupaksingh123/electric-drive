@@ -59,6 +59,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Homepage from './Home/HomePage';
 import AllRecordsTable from './AllRecord/AllRecordsTable';
+import InventoryPage from './Inventory/InventoryPage';
 import LoginPage from './Home/LoginPage';
 import ProtectedRoute from './Home/ProtectedRoute'; // This assumes you created ProtectedRoute.js
 import './App.css';
@@ -81,6 +82,8 @@ function App() {
         {/* Navigation Links */}
         <Link to="/" className="text-blue-600 no-print" style={{marginRight:"20px"}}>Home</Link> 
         <Link to="/all-records" className="text-blue-600 no-print">All Records</Link>
+        <Link to="/Inventory-List" className="text-blue-600 no-print">InventoryPage</Link>
+        
       </div>
 
 {/* ⏳ Show countdown when < 15 seconds */}
@@ -115,6 +118,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AllRecordsTable />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Inventory-List"
+          element={
+            <ProtectedRoute>
+              <InventoryPage />
             </ProtectedRoute>
           }
         />
