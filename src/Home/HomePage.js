@@ -458,17 +458,56 @@ function downloadPDF(mode = "download") {
       });
   };
 
-  function incrementInvoiceNumber(invoice) {
-    const match = invoice.match(/(.*\/)(\d+)$/);
-    if (!match) return invoice;
+  // function incrementInvoiceNumber(invoice) {
+  //   const match = invoice.match(/(.*\/)(\d+)$/);
+  //   if (!match) return invoice;
 
-    const prefix = match[1];           // "ED/25-26/"
-    const number = parseInt(match[2]); // 1
-    const incremented = number + 1;
-    const padded = String(incremented).padStart(match[2].length, '0'); // Preserve leading zeros
+  //   const prefix = match[1];           // "ED/25-26/"
+  //   const number = parseInt(match[2]); // 1
+  //   const incremented = number + 1;
+  //   const padded = String(incremented).padStart(match[2].length, '0'); // Preserve leading zeros
 
-    return `${prefix}${padded}`;
+  //   return `${prefix}${padded}`;
+  // }
+
+  //modified incrementInvoiceNumber to handle different formats start
+ 
+
+function incrementInvoiceNumber(invoice) {
+  //invoice="ED/2026/009"; // for testing
+  const PREFIX = "ED";
+  const currentYear = new Date().getFullYear();
+
+  // No previous invoice
+  if (!invoice || typeof invoice !== "string") {
+    return `${PREFIX}/${currentYear}/001`;
   }
+
+  // Expected format: ED/YYYY/NNN
+  const match = invoice.match(/^([A-Z]+)\/(\d{4})\/(\d+)$/);
+
+  // Invalid format → reset safely
+  if (!match) {
+    return `${PREFIX}/${currentYear}/001`;
+  }
+
+  const lastYear = parseInt(match[2], 10);
+  const lastNumberStr = match[3];
+  const lastNumber = parseInt(lastNumberStr, 10);
+
+  // Same year → increment
+  if (lastYear === currentYear) {
+    return `${PREFIX}/${currentYear}/${String(lastNumber + 1).padStart(
+      lastNumberStr.length,
+      "0"
+    )}`;
+  }
+
+  // Year changed → reset
+  return `${PREFIX}/${currentYear}/001`;
+}
+
+  //modified incrementInvoiceNumber to handle different formats end
 
   const fetchLatestInvoiceNumber = () => {
     const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
