@@ -30,7 +30,7 @@ const HomePage = () => {
 
 
   const [isEditable, setIsEditable] = useState(true);
-  const [showEditButtons, setShowEditButtons] = useState(false);
+ // const [showEditButtons, setShowEditButtons] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
 
@@ -670,7 +670,7 @@ function incrementInvoiceNumber(invoice) {
     }
 
 
-  }, []);
+  }, [fetchLatestInvoiceNumber]);
 
   return (
     <div style={{ maxWidth: '800px' }}>

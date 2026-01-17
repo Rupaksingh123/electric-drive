@@ -64,7 +64,7 @@ import LoginPage from './Home/LoginPage';
 import ProtectedRoute from './Home/ProtectedRoute'; // This assumes you created ProtectedRoute.js
 import './App.css';
 
-import AutoLogout from './security/AutoLogout'; // adjust path as needed
+//import AutoLogout from './security/AutoLogout'; // adjust path as needed
 import AutoLogoutWatcher from './security/AutoLogoutWatcher'; 
 
 function App() {
