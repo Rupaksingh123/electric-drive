@@ -425,7 +425,40 @@ function incrementInvoiceNumber(invoice) {
 //   return `${PREFIX}/${fyLabel}/001`;
 // }
 
-  const fetchLatestInvoiceNumber = () => {
+  // const fetchLatestInvoiceNumber = () => {
+  //   const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  //   const invoiceDateInput = document.getElementById("invoiceDate");
+  //   if (invoiceDateInput) {
+  //     invoiceDateInput.value = today;
+  //     console.log(today);
+  //   }
+
+  //   console.log("Fetching latest invoice number...");
+  //   fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?mode=latest")
+  //     .then(res => {
+  //       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+  //       return res.json();
+  //     })
+  //     .then(data => {
+  //       if (data.success) {
+  //         console.log("Latest Invoice:", data.latestInvoice);
+  //         const nextInvoice = incrementInvoiceNumber(data.latestInvoice);
+  //         document.getElementById('invoiceNumber').value = nextInvoice || "";
+  //         console.log("next invoice no : " + nextInvoice);
+  //       } else {
+  //         console.warn("No invoice found.");
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error("Error fetching invoice:", err.message);
+  //     });
+
+  // };
+   // ✅ wrap function to satisfy useEffect dependency rule
+  const fetchLatestInvoiceNumber = useCallback(() => {
+    // your existing logic here
+    console.log("Fetching latest invoice number");
+
     const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
     const invoiceDateInput = document.getElementById("invoiceDate");
     if (invoiceDateInput) {
@@ -453,7 +486,11 @@ function incrementInvoiceNumber(invoice) {
         console.error("Error fetching invoice:", err.message);
       });
 
-  };
+ 
+
+
+  }, []);
+
 
 
   function populateFormFields(data, action) {
@@ -623,40 +660,33 @@ function incrementInvoiceNumber(invoice) {
   }
 
 
-
-
-
-  useEffect(() => {
+ useEffect(() => {
     monitorInternetConnection();
 
-    document.getElementById("saveBtn").addEventListener("click", () => {
-      if (navigator.onLine) {
-        //saveInvoice();
-         saveInvoice(); // save your invoice (e.g., to Google Sheet or DB)
-         //downloadPDF();
-   // window.print();      // then open the print dialog (you can save as PDF)
-      } else {
-        alert("No internet");
-      }
-    });
-
-    fetchLatestInvoiceNumber();
-
-    //get by Invoive Button dissable
-
+    const saveBtn = document.getElementById("saveBtn");
     const input = document.getElementById("getinvoiceNumber");
     const button = document.getElementById("getByInvoice");
 
-    console.log("btn:", button);
+    // ---- SAVE BUTTON CLICK ----
+    const handleSaveClick = () => {
+      if (navigator.onLine) {
+        saveInvoice();
+      } else {
+        alert("No internet");
+      }
+    };
 
+    if (saveBtn) {
+      saveBtn.addEventListener("click", handleSaveClick);
+    }
+
+    // ---- GET BY INVOICE BUTTON LOGIC ----
     if (button && input) {
-      // Set initial style and disable button
       button.disabled = true;
       button.style.backgroundColor = "#ccc";
       button.style.cursor = "not-allowed";
 
-      // Input event listener
-      input.addEventListener("input", () => {
+      const handleInput = () => {
         if (input.value.trim() !== "") {
           button.disabled = false;
           button.style.backgroundColor = "#0275d8";
@@ -666,11 +696,69 @@ function incrementInvoiceNumber(invoice) {
           button.style.backgroundColor = "#ccc";
           button.style.cursor = "not-allowed";
         }
-      });
+      };
+
+      input.addEventListener("input", handleInput);
+
+      // ✅ cleanup to prevent duplicate listeners
+      return () => {
+        input.removeEventListener("input", handleInput);
+        if (saveBtn) {
+          saveBtn.removeEventListener("click", handleSaveClick);
+        }
+      };
     }
 
+    fetchLatestInvoiceNumber();
 
-  }, []);
+  }, [fetchLatestInvoiceNumber]);
+
+
+  // useEffect(() => {
+  //   monitorInternetConnection();
+
+  //   document.getElementById("saveBtn").addEventListener("click", () => {
+  //     if (navigator.onLine) {
+  //       //saveInvoice();
+  //        saveInvoice(); // save your invoice (e.g., to Google Sheet or DB)
+  //        //downloadPDF();
+  //  // window.print();      // then open the print dialog (you can save as PDF)
+  //     } else {
+  //       alert("No internet");
+  //     }
+  //   });
+
+  //   fetchLatestInvoiceNumber();
+
+  //   //get by Invoive Button dissable
+
+  //   const input = document.getElementById("getinvoiceNumber");
+  //   const button = document.getElementById("getByInvoice");
+
+  //   console.log("btn:", button);
+
+  //   if (button && input) {
+  //     // Set initial style and disable button
+  //     button.disabled = true;
+  //     button.style.backgroundColor = "#ccc";
+  //     button.style.cursor = "not-allowed";
+
+  //     // Input event listener
+  //     input.addEventListener("input", () => {
+  //       if (input.value.trim() !== "") {
+  //         button.disabled = false;
+  //         button.style.backgroundColor = "#0275d8";
+  //         button.style.cursor = "pointer";
+  //       } else {
+  //         button.disabled = true;
+  //         button.style.backgroundColor = "#ccc";
+  //         button.style.cursor = "not-allowed";
+  //       }
+  //     });
+  //   }
+
+
+  // }, []);
 
   return (
     <div style={{ maxWidth: '800px' }}>
