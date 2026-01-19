@@ -533,7 +533,7 @@ function incrementInvoiceNumber(invoice) {
       statusLabel.style.color = "white";
       statusLabel.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.1)";
 
-      if (balanceAmount != 0) {
+      if (balanceAmount !== 0) {
         statusLabel.innerText = "Pending";
         statusLabel.style.backgroundColor = "#f39c12";
       } else {
