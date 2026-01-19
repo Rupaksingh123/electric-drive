@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { numberToWords } from '../utils/numberToWords';
+import { useCallback } from "react";
 
 
 
@@ -25,7 +26,29 @@ const [tax, setTax] = useState(initialData.tax || 0);
 
 
 
-  const handleCalc = (newQty, newRate, newGst) => {
+  // const handleCalc = (newQty, newRate, newGst) => {
+  //   const baseAmount = newQty * newRate;
+  //   const totalTax = (baseAmount * newGst) / 100;
+  //   const totalAmount = baseAmount + totalTax;
+
+  //   const cgst = (totalTax / 2).toFixed(2);
+  //   const sgst = (totalTax / 2).toFixed(2);
+
+  //   setTaxableValue(baseAmount.toFixed(2));
+  //   setCgstAmount(cgst);
+  //   setSgstAmount(sgst);
+  //   setTax(totalTax.toFixed(2));
+  //   setAmount(totalAmount.toFixed(2));
+  //   setGrandTotal(totalAmount.toFixed(2));
+  //   setBalance((totalAmount - received).toFixed(2));
+
+  //   const inWords = numberToWords(Math.round(totalAmount));
+  // document.getElementById("inWords").innerText = inWords;
+  // };
+
+
+const handleCalc = useCallback(
+  (newQty, newRate, newGst) => {
     const baseAmount = newQty * newRate;
     const totalTax = (baseAmount * newGst) / 100;
     const totalAmount = baseAmount + totalTax;
@@ -42,8 +65,11 @@ const [tax, setTax] = useState(initialData.tax || 0);
     setBalance((totalAmount - received).toFixed(2));
 
     const inWords = numberToWords(Math.round(totalAmount));
-  document.getElementById("inWords").innerText = inWords;
-  };
+    document.getElementById("inWords").innerText = inWords;
+  },
+  [received] // ✅ dependency (used inside function)
+);
+
 
   useEffect(() => {
   if (initialData) {
@@ -76,9 +102,13 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
     setBalance((grandTotal - rcv).toFixed(2));
   };
 
+  // useEffect(() => {
+  //   handleCalc(qty, rate, gst);
+  // }, [gst, qty, rate, handleCalc]);
   useEffect(() => {
-    handleCalc(qty, rate, gst);
-  }, [gst, qty, rate, handleCalc]);
+  handleCalc(qty, rate, gst);
+}, [qty, rate, gst, handleCalc]);
+
 
   return (
     <div>
