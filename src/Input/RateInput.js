@@ -78,7 +78,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
 
   useEffect(() => {
     handleCalc(qty, rate, gst);
-  }, []);
+  }, [gst, qty, rate, handleCalc]);
 
   return (
     <div>

@@ -670,7 +670,7 @@ function incrementInvoiceNumber(invoice) {
     }
 
 
-  }, [fetchLatestInvoiceNumber]);
+  }, []);
 
   return (
     <div style={{ maxWidth: '800px' }}>

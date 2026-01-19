@@ -95,6 +95,7 @@ const InventoryPage = () => {
     }
   };
 
+  console.log(status);
   // ✅ Fetch all inventory when component loads
   useEffect(() => {
     fetchInventory();
