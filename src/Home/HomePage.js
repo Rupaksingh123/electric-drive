@@ -335,95 +335,95 @@ function downloadPDF(mode = "download") {
   //modified incrementInvoiceNumber to handle different formats start
  
 
-function incrementInvoiceNumber(invoice) {
-  //invoice="ED/2026/009"; // for testing
-  const PREFIX = "ED";
-  const currentYear = new Date().getFullYear();
-
-  // No previous invoice
-  if (!invoice || typeof invoice !== "string") {
-    return `${PREFIX}/${currentYear}/001`;
-  }
-
-  // Expected format: ED/YYYY/NNN
-  const match = invoice.match(/^([A-Z]+)\/(\d{4})\/(\d+)$/);
-
-  // Invalid format → reset safely
-  if (!match) {
-    return `${PREFIX}/${currentYear}/001`;
-  }
-
-  const lastYear = parseInt(match[2], 10);
-  const lastNumberStr = match[3];
-  const lastNumber = parseInt(lastNumberStr, 10);
-
-  // Same year → increment
-  if (lastYear === currentYear) {
-    return `${PREFIX}/${currentYear}/${String(lastNumber + 1).padStart(
-      lastNumberStr.length,
-      "0"
-    )}`;
-  }
-
-  // Year changed → reset
-  return `${PREFIX}/${currentYear}/001`;
-}
-
-  //modified incrementInvoiceNumber to handle different formats end
-
-//   function incrementInvoiceNumber(lastInvoice, invoiceDate = new Date()) {
+// function incrementInvoiceNumber(invoice) {
+//   //invoice="ED/2026/009"; // for testing
 //   const PREFIX = "ED";
+//   const currentYear = new Date().getFullYear();
 
-//   const year = invoiceDate.getFullYear();
-//   const month = invoiceDate.getMonth() + 1; // 1-12
-
-//   // 🔹 Determine Financial Year
-//   let startYear, endYear;
-//   if (month >= 4) {
-//     startYear = year;
-//     endYear = year + 1;
-//   } else {
-//     startYear = year - 1;
-//     endYear = year;
+//   // No previous invoice
+//   if (!invoice || typeof invoice !== "string") {
+//     return `${PREFIX}/${currentYear}/001`;
 //   }
 
-//   const fyLabel = `${String(startYear).slice(-2)}-${String(endYear).slice(-2)}`;
+//   // Expected format: ED/YYYY/NNN
+//   const match = invoice.match(/^([A-Z]+)\/(\d{4})\/(\d+)$/);
 
-//   console.log("📅 Invoice Date:", invoiceDate.toDateString());
-//   console.log("📆 Financial Year:", fyLabel);
-
-//   // 🔹 No previous invoice
-//   if (!lastInvoice || typeof lastInvoice !== "string") {
-//     console.log("🆕 No previous invoice → Reset");
-//     return `${PREFIX}/${fyLabel}/001`;
-//   }
-
-//   // 🔹 Expected format: ED/25-26/009
-//   const match = lastInvoice.match(/^([A-Z]+)\/(\d{2}-\d{2})\/(\d+)$/);
-
+//   // Invalid format → reset safely
 //   if (!match) {
-//     console.warn("⚠️ Invalid invoice format → Reset");
-//     return `${PREFIX}/${fyLabel}/001`;
+//     return `${PREFIX}/${currentYear}/001`;
 //   }
 
-//   const lastFY = match[2];
+//   const lastYear = parseInt(match[2], 10);
 //   const lastNumberStr = match[3];
 //   const lastNumber = parseInt(lastNumberStr, 10);
 
-//   console.log("🧾 Last Invoice:", lastInvoice);
-//   console.log("🕰 Last FY:", lastFY);
-
-//   // 🔹 Same financial year → increment
-//   if (lastFY === fyLabel) {
-//     const nextNumber = String(lastNumber + 1).padStart(lastNumberStr.length, "0");
-//     console.log("➕ Same FY → Increment:", nextNumber);
-//     return `${PREFIX}/${fyLabel}/${nextNumber}`;
+//   // Same year → increment
+//   if (lastYear === currentYear) {
+//     return `${PREFIX}/${currentYear}/${String(lastNumber + 1).padStart(
+//       lastNumberStr.length,
+//       "0"
+//     )}`;
 //   }
 
-//   // 🔹 New financial year → reset
-//   console.log("🔄 New FY → Reset to 001");
-//   return `${PREFIX}/${fyLabel}/001`;
+//   // Year changed → reset
+//   return `${PREFIX}/${currentYear}/001`;
 // }
+
+  //modified incrementInvoiceNumber to handle different formats end
+
+  function incrementInvoiceNumber(lastInvoice, invoiceDate = new Date()) {
+  const PREFIX = "ED";
+
+  const year = invoiceDate.getFullYear();
+  const month = invoiceDate.getMonth() + 1; // 1-12
+
+  // 🔹 Determine Financial Year
+  let startYear, endYear;
+  if (month >= 4) {
+    startYear = year;
+    endYear = year + 1;
+  } else {
+    startYear = year - 1;
+    endYear = year;
+  }
+
+  const fyLabel = `${String(startYear).slice(-2)}-${String(endYear).slice(-2)}`;
+
+  console.log("📅 Invoice Date:", invoiceDate.toDateString());
+  console.log("📆 Financial Year:", fyLabel);
+
+  // 🔹 No previous invoice
+  if (!lastInvoice || typeof lastInvoice !== "string") {
+    console.log("🆕 No previous invoice → Reset");
+    return `${PREFIX}/${fyLabel}/001`;
+  }
+
+  // 🔹 Expected format: ED/25-26/009
+  const match = lastInvoice.match(/^([A-Z]+)\/(\d{2}-\d{2})\/(\d+)$/);
+
+  if (!match) {
+    console.warn("⚠️ Invalid invoice format → Reset");
+    return `${PREFIX}/${fyLabel}/001`;
+  }
+
+  const lastFY = match[2];
+  const lastNumberStr = match[3];
+  const lastNumber = parseInt(lastNumberStr, 10);
+
+  console.log("🧾 Last Invoice:", lastInvoice);
+  console.log("🕰 Last FY:", lastFY);
+
+  // 🔹 Same financial year → increment
+  if (lastFY === fyLabel) {
+    const nextNumber = String(lastNumber + 1).padStart(lastNumberStr.length, "0");
+    console.log("➕ Same FY → Increment:", nextNumber);
+    return `${PREFIX}/${fyLabel}/${nextNumber}`;
+  }
+
+  // 🔹 New financial year → reset
+  console.log("🔄 New FY → Reset to 001");
+  return `${PREFIX}/${fyLabel}/001`;
+}
 
   // const fetchLatestInvoiceNumber = () => {
   //   const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
@@ -661,7 +661,11 @@ function incrementInvoiceNumber(invoice) {
 
 
  useEffect(() => {
+  console.log("in useeffect");
+  document.getElementById("invoiceDate").value =
+      new Date().toISOString().split("T")[0];
     monitorInternetConnection();
+    fetchLatestInvoiceNumber();
 
     const saveBtn = document.getElementById("saveBtn");
     const input = document.getElementById("getinvoiceNumber");
@@ -709,7 +713,7 @@ function incrementInvoiceNumber(invoice) {
       };
     }
 
-    fetchLatestInvoiceNumber();
+    
 
   }, [fetchLatestInvoiceNumber]);
 
