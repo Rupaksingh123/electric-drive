@@ -146,7 +146,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
   <input id="Controller" type="text" />
 </div>
             </td>
-            <td><input id="hsn" type="text" value="87116020" readOnly /></td>
+            <td><input id="hsn" type="text" value="87116020"  /></td>
             <td>
               <input id="qty"
                 type="number"
