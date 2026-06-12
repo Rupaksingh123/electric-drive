@@ -242,7 +242,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
         </thead>
         <tbody>
           <tr>
-            <td><input id='hsn' type="text" value="87116020" readOnly /></td>
+            <td><input id='hsn' type="text" value="87116020" /></td>
             <td><input id='taxableVal' type="text" value={taxableValue} readOnly /></td>
             <td><input id='cgst1' type="text" value={(gst / 2).toFixed(2) + "%"} readOnly /></td>
             <td><input id='cgst' type="text" value={cgstAmount} readOnly /></td>
