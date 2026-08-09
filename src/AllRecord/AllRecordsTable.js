@@ -55,7 +55,7 @@ const columnHeaders = {
 
 
 
-  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo','ControllerNo', 'hsn', 'qty', 'rate','Gst','tax','amount','receivedAmount','balanceAmount','companyAddress'];
+  const visibleColumns = ['invoiceNumber', 'billTo', 'Date', 'billMobile','billEmail','billPan','billAadhar', 'modelNo', 'ChassisNo', 'MotorNo','BatteryNo','ControllerNo', 'hsn', 'qty', 'rate','Gst','tax','amount','receivedAmount','balanceAmount','batterymonth'];
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
