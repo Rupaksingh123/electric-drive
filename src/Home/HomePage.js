@@ -73,7 +73,8 @@ const HomePage = () => {
       tax: document.getElementById('tax').value,
       amount: document.getElementById('amount').value,
       received: document.getElementById('received').value,
-      balance: document.getElementById('balance').value
+      balance: document.getElementById('balance').value,
+      battery_warranty_months: document.getElementById('battery_warranty_months').value
     };
 
 
@@ -114,7 +115,8 @@ const HomePage = () => {
         tax: invoiceData.tax,
         amount: invoiceData.amount,
         receivedAmount: invoiceData.received,
-        balanceAmount: invoiceData.balance
+        balanceAmount: invoiceData.balance,
+        batterymonth: invoiceData.battery_warranty_months
 
         //"balance" is database column name : right balance in above variable name 
 
@@ -994,7 +996,7 @@ function downloadPDF(mode = "download") {
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>
               <strong>Terms and Conditions:</strong><br />
-              1. Moter, Charger, Controller - One year Warranty, Battery –<input type="number" defaultValue={12} style={{ width: '25px' }} />Months Warranty. The responsibility of the warranty will be of the Company.<br />
+              1. Moter, Charger, Controller - One year Warranty, Battery –<input id="battery_warranty_months" type="number" defaultValue={12} style={{ width: '25px' }} />Months Warranty. The responsibility of the warranty will be of the Company.<br />
               2. Goods once sold will not be taken back or exchanged.<br />
               3. All legal dispute shall not lie with Seller, Subject to Company jurisdiction only.<br />
               4. Home service is not available.
