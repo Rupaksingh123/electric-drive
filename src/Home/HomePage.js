@@ -82,7 +82,7 @@ const HomePage = () => {
     console.log(invoiceData);
     localStorage.setItem('invoice', JSON.stringify(invoiceData));
 
-    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -273,9 +273,12 @@ function downloadPDF(mode = "download") {
       Gst: document.getElementById('gst').value,
       tax: document.getElementById('tax').value,
       received: document.getElementById('received').value,
+      battery_warranty_months: document.getElementById('battery_warranty_months').value
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
+   // fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
+
+    fetch("https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -302,7 +305,8 @@ function downloadPDF(mode = "download") {
         rate: invoiceData.rate,
         Gst: invoiceData.Gst,
         tax: invoiceData.tax,
-        receivedAmount: invoiceData.received
+        receivedAmount: invoiceData.received,
+        batterymonth: invoiceData.battery_warranty_months
       })
     })
       .then(async (response) => {
@@ -314,6 +318,7 @@ function downloadPDF(mode = "download") {
       })
       .then(data => {
         console.log("Update response:", data);
+        console.log("Update response invoiceData :", invoiceData);
         alert(data.status === "success" ? "Invoice updated successfully." : data.message);
       })
       .catch(error => {
@@ -469,7 +474,7 @@ function downloadPDF(mode = "download") {
     }
 
     console.log("Fetching latest invoice number...");
-    fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?mode=latest")
+    fetch("https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec/exec?mode=latest")
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -501,7 +506,7 @@ function downloadPDF(mode = "download") {
     const {
       billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo,
       Gst, MotorNo, amount, hsn, invoiceDate, modelNo, ControllerNo, qty, rate,
-      tax, receivedAmount, balanceAmount
+      tax, receivedAmount, balanceAmount ,batterymonth
     } = data;
 
 
@@ -557,6 +562,8 @@ function downloadPDF(mode = "download") {
     set('sgstamt', tax / 2);
     set('tax1', tax);
 
+    set('battery_warranty_months', batterymonth);
+
     // In words
     document.getElementById('inWords').innerText = numberToWords(amount);
 
@@ -584,7 +591,7 @@ function downloadPDF(mode = "download") {
 
   const fetchByInvoice = () => {
     let invoiceNumber = document.getElementById("getinvoiceNumber").value;
-    fetch(`https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec?invoiceNumber=${encodeURIComponent(invoiceNumber)}`)
       .then(response => response.json())
       .then(data => {
         if (data.success) {

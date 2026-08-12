@@ -59,42 +59,138 @@ const columnHeaders = {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [selectedInvoice, setSelectedInvoice] = useState(null); //added
+
+  const getWarrantyExpiry = (date, months) => {
+  if (!date || !months) return "";
+
+  const expiry = new Date(date);
+  expiry.setMonth(expiry.getMonth() + Number(months));
+
+  return expiry.toISOString().split("T")[0];
+};
+
   //king
   // const API_URL =
   //"https://script.google.com/macros/s/AKfycbzwHKiRg0CTVtexeSmDdd6anwas2ahCmUvHObiFQVXeLiBTgrOSQkz3abolyjc37LZB6g/exec?mode=allrecords";
 //Main 
 //https://script.google.com/macros/s/AKfycbw6n8zK9bO9_0_uzhQKp0OFQh0TUyEkD1yET2S6g6ccEZKsX-vwvosQLhDC_zsDN2uYBg/exec
 const API_URL =
-    "https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec?mode=allrecords";
+    "https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec?mode=allrecords";
 
 
+  // useEffect(() => {
+  //   const fetchInvoices = async () => {
+  //     try {
+  //       const response = await fetch(API_URL);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+
+  //       if (data.success) {
+  //         console.log("All Invoices:", data.data);
+  //         setRecords(data.data);
+  //       } else {
+  //         alert("No invoices found.");
+  //         setRecords([]);
+  //       }
+  //     } catch (error) {
+  //       console.error("Fetch error:", error);
+  //       alert("Error fetching invoices.");
+  //       setRecords([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchInvoices();
+  // }, []);
   useEffect(() => {
-    const fetchInvoices = async () => {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+  const fetchInvoices = async () => {
+    try {
+      const response = await fetch(API_URL);
 
-        if (data.success) {
-          console.log("All Invoices:", data.data);
-          setRecords(data.data);
-        } else {
-          alert("No invoices found.");
-          setRecords([]);
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        alert("Error fetching invoices.");
-        setRecords([]);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
-    fetchInvoices();
-  }, []);
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("All Invoices:", data.data);
+
+        const updatedRecords = data.data.map((record) => {
+          let warrantyExpiry = "";
+          let warrantyStatus = "";
+
+          if (record.Date && record.batterymonth) {
+            const expiryDate = new Date(record.Date);
+
+            expiryDate.setMonth(
+              expiryDate.getMonth() + Number(record.batterymonth)
+            );
+
+            warrantyExpiry = expiryDate.toISOString().split("T")[0];
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            expiryDate.setHours(0, 0, 0, 0);
+
+            const diffTime = expiryDate - today;
+            const diffDays = Math.ceil(
+              diffTime / (1000 * 60 * 60 * 24)
+            );
+
+            if (diffDays < 0) {
+              warrantyStatus = "EXPIRED";
+            } else if (diffDays <= 30) {
+              warrantyStatus = "EXPIRING SOON";
+            } else {
+              warrantyStatus = "ACTIVE";
+            }
+          }
+
+          return {
+            ...record,
+            warrantyExpiry,
+            warrantyStatus,
+          };
+        });
+
+        // Show warranty information in console
+        console.log("===== WARRANTY DETAILS =====");
+
+        updatedRecords.forEach((record) => {
+          console.log({
+            invoice: record["Invoice #"],
+            customer: record["Customer Name"],
+            invoiceDate: record.Date,
+            warrantyMonths: record.batterymonth,
+            warrantyExpiry: record.warrantyExpiry,
+            warrantyStatus: record.warrantyStatus,
+          });
+        });
+
+        console.log("============================");
+
+        setRecords(updatedRecords);
+      } else {
+        alert("No invoices found.");
+        setRecords([]);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      alert("Error fetching invoices.");
+      setRecords([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchInvoices();
+}, []);
 
   return (
     <div className=" ml-0 p-4">
@@ -144,21 +240,134 @@ const API_URL =
       ))}
     </tr>
   </thead>
+ 
+
+{/* 
   <tbody>
-    {records.map((record, index) => (
-      <tr key={index}>
-        {visibleColumns.map((key) => (
-          <td key={key} className="py-2 px-4 border-b whitespace-nowrap">
-          
-             {key === "Date"
-      ? new Date(record[key]).toISOString().split("T")[0] 
-      : record[key]}
-          </td>
-        ))}
-      </tr>
-    ))}
-  </tbody>
+  {records.map((record, index) => (
+    <tr key={index}>
+      {visibleColumns.map((key) => (
+        <td
+          key={key}
+          className="py-2 px-4 border-b whitespace-nowrap"
+        >
+          {key === "Date"
+            ? new Date(record[key]).toISOString().split("T")[0]
+            : key === "batterymonth"
+            ? record[key] !== null &&
+              record[key] !== undefined &&
+              record[key] !== ""
+              ? `${record[key]} Months`
+              : ""
+            : record[key]}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>  */}
+<tbody>
+  {records.map((record, index) => (
+    <tr key={index}>
+      {visibleColumns.map((key) => (
+        <td
+          key={key}
+          className="py-2 px-4 border-b whitespace-nowrap"
+        >
+          {key === "Invoice #" ? (
+            <button
+              onClick={() => setSelectedInvoice(record)}
+              className="text-blue-600 hover:underline font-semibold"
+            >
+              {record[key]}
+            </button>
+          ) : key === "Balance ₹" ? (
+            <span
+              className={`inline-block px-3 py-1 rounded-md font-semibold ${
+                Number(record[key]) > 10
+                  ? "bg-yellow-300 text-black"
+                  : "bg-green-300 text-black"
+              }`}
+            >
+              {record[key] ?? ""}
+            </span>
+          ) : key === "Date" ? (
+            record[key]
+              ? new Date(record[key]).toISOString().split("T")[0]
+              : ""
+          ) : key === "batterymonth" ? (
+            record[key] !== null &&
+            record[key] !== undefined &&
+            record[key] !== ""
+              ? `${record[key]} Months`
+              : ""
+          ) : (
+            record[key] ?? ""
+          )}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
+
 </table>
+
+{selectedInvoice && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    onClick={() => setSelectedInvoice(null)}
+  >
+    <div
+      className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold">
+          Invoice Details
+        </h2>
+
+        <button
+          onClick={() => setSelectedInvoice(null)}
+          className="text-gray-500 hover:text-red-600 text-2xl"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* Details */}
+      <div className="space-y-2">
+        {Object.entries(selectedInvoice).map(([key, value]) => (
+          <div
+            key={key}
+            className="flex border-b py-2"
+          >
+            <div className="font-semibold w-1/3">
+              {key}
+            </div>
+
+            <div className="w-2/3 break-words">
+              {value !== null &&
+              value !== undefined &&
+              value !== ""
+                ? String(value)
+                : "-"}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Close */}
+      <div className="mt-5 text-right">
+        <button
+          onClick={() => setSelectedInvoice(null)}
+          className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
 
         </div>

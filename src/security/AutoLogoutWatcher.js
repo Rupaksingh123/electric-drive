@@ -14,7 +14,7 @@ const seconds1 = minutes % 60;
     const newLoginTime = Date.now(); // reset now
     localStorage.setItem('loginTime', newLoginTime.toString());
       refreshSession(); // ✅ call function to extend
-    alert('Session extended by 15 minutes');
+    alert('Session extended by 30 minutes');
   };
 
 
@@ -25,14 +25,14 @@ const seconds1 = minutes % 60;
 
 
     {console.log("timeLeft: " + minutes + "m " + seconds1 + "s")}
-      {seconds !== null && seconds > 0 &&  seconds <= 60 && (
+      {seconds !== null && seconds > 0 &&  seconds <= 180 && (
         <div className="text-red-500 text-center no-print">
           Session expires in {seconds} second{seconds !== 1 ? 's' : ''}.
           <button
         onClick={handleExtend}
         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
       >
-        Extend Session by 15 Minutes
+        Extend Session by 30 Minutes
       </button>
         </div>
       )}
