@@ -59,7 +59,7 @@ const columnHeaders = {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedInvoice, setSelectedInvoice] = useState(null); //added
+  
 
 
 
