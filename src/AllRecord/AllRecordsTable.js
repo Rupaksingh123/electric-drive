@@ -206,7 +206,7 @@ const API_URL =
       ))}
     </tr>
   </thead>
-  <tbody>
+  {/* <tbody>
     {records.map((record, index) => (
       <tr key={index}>
         {visibleColumns.map((key) => (
@@ -219,7 +219,30 @@ const API_URL =
         ))}
       </tr>
     ))}
-  </tbody>
+  </tbody> */}
+
+  <tbody>
+  {records.map((record, index) => (
+    <tr key={index}>
+      {visibleColumns.map((key) => (
+        <td
+          key={key}
+          className="py-2 px-4 border-b whitespace-nowrap"
+        >
+          {key === "Date"
+            ? new Date(record[key]).toISOString().split("T")[0]
+            : key === "batterymonth"
+            ? record[key] !== null &&
+              record[key] !== undefined &&
+              record[key] !== ""
+              ? `${record[key]} Months`
+              : ""
+            : record[key]}
+        </td>
+      ))}
+    </tr>
+  ))}
+</tbody>
 </table> 
 
 
