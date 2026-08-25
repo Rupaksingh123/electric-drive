@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useCallback} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import RateInput from "../Input/RateInput";
 import { numberToWords } from '../utils/numberToWords';
 import html2pdf from 'html2pdf.js';
@@ -13,28 +13,28 @@ const HomePage = () => {
 
 
   const [isSaveEnabled, setIsSaveEnabled] = useState(false);
- 
-    const [billAddress, setBillAddress] = useState('');
+
+  const [billAddress, setBillAddress] = useState('');
 
 
   const handleBillAddressChange = (e) => {
 
     const value = e.target.value.trim();
-    console.log("value : " +fetchedInvoiceData.billTo);
-  setBillAddress(e.target.value);
+    console.log("value : " + fetchedInvoiceData.billTo);
+    setBillAddress(e.target.value);
 
-  setIsSaveEnabled(value !== '');
-};
+    setIsSaveEnabled(value !== '');
+  };
 
 
 
 
   const [isEditable, setIsEditable] = useState(true);
- // const [showEditButtons, setShowEditButtons] = useState(false);
+  // const [showEditButtons, setShowEditButtons] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
 
-  
+
 
   const monitorInternetConnection = () => {
     window.addEventListener('online', () => alert('Back online'));
@@ -135,7 +135,7 @@ const HomePage = () => {
       })
       .catch(error => {
         console.error("Fetch failed:", error.message || error);
-       // alert("Fetch Error: " + error.message);
+        // alert("Fetch Error: " + error.message);
       });
 
     alert('Invoice saved locally.');
@@ -144,110 +144,110 @@ const HomePage = () => {
   };
 
 
-function downloadPDF(mode = "download") {
-  const element = document.getElementById("root");
-  if (!element) {
-    alert("Invoice content is not available yet.");
-    return;
-  }
+  function downloadPDF(mode = "download") {
+    const element = document.getElementById("root");
+    if (!element) {
+      alert("Invoice content is not available yet.");
+      return;
+    }
 
-  // 🔻 Step 1: Hide unwanted elements
-  const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn, #getByInoviceDiv');
-  const hiddenElements = [];
-  elementsToHide.forEach(el => {
-    hiddenElements.push({ el, display: el.style.display });
-    el.style.display = 'none';
-  });
+    // 🔻 Step 1: Hide unwanted elements
+    const elementsToHide = document.querySelectorAll('.no-print, .button-group, #saveBtn, #getByInoviceDiv');
+    const hiddenElements = [];
+    elementsToHide.forEach(el => {
+      hiddenElements.push({ el, display: el.style.display });
+      el.style.display = 'none';
+    });
 
-  // 🔻 Step 2: Temporarily modify textarea style
-  const billTo = document.getElementById("bill-to-address");
-  let originalTextareaStyle = null;
+    // 🔻 Step 2: Temporarily modify textarea style
+    const billTo = document.getElementById("bill-to-address");
+    let originalTextareaStyle = null;
 
-  if (billTo) {
-   
-
- billTo.style.height = '2.8em';                // ~2 lines depending on font
-  billTo.style.overflow = 'hidden';
-  billTo.style.whiteSpace = 'pre-wrap';         // ✅ allows wrapping
-  billTo.style.resize = 'none';
-  billTo.style.lineHeight = '1.4';
-  billTo.style.fontSize = '12px';               // optional, to fit more content
-  billTo.style.wordBreak = 'break-word';        // ✅ ensures word breaking if long words
+    if (billTo) {
 
 
+      billTo.style.height = '2.8em';                // ~2 lines depending on font
+      billTo.style.overflow = 'hidden';
+      billTo.style.whiteSpace = 'pre-wrap';         // ✅ allows wrapping
+      billTo.style.resize = 'none';
+      billTo.style.lineHeight = '1.4';
+      billTo.style.fontSize = '12px';               // optional, to fit more content
+      billTo.style.wordBreak = 'break-word';        // ✅ ensures word breaking if long words
 
-    originalTextareaStyle = {
-      height: billTo.style.height,
-      overflow: billTo.style.overflow,
-      resize: billTo.style.resize,
-      whiteSpace: billTo.style.whiteSpace,
-      textOverflow: billTo.style.textOverflow
+
+
+      originalTextareaStyle = {
+        height: billTo.style.height,
+        overflow: billTo.style.overflow,
+        resize: billTo.style.resize,
+        whiteSpace: billTo.style.whiteSpace,
+        textOverflow: billTo.style.textOverflow
+      };
+
+
+    }
+
+    // 🔻 Step 3: Force opacity of .container to 1 (if needed)
+    const containerEls = element.querySelectorAll(".container");
+    const originalOpacities = [];
+    containerEls.forEach(el => {
+      originalOpacities.push(el.style.opacity);
+      el.style.opacity = "1";
+    });
+
+    // 🔄 Step 4: Generate PDF
+    const options = {
+      margin: 0.2,
+      image: { type: 'jpeg', quality: 1 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 
-    
-  }
+    const worker = html2pdf().set(options).from(element).toPdf();
 
-  // 🔻 Step 3: Force opacity of .container to 1 (if needed)
-  const containerEls = element.querySelectorAll(".container");
-  const originalOpacities = [];
-  containerEls.forEach(el => {
-    originalOpacities.push(el.style.opacity);
-    el.style.opacity = "1";
-  });
+    if (mode === "print") {
+      worker.outputPdf('bloburl').then((blobUrl) => {
+        const printWindow = window.open(blobUrl);
+        if (printWindow) {
+          printWindow.addEventListener('load', () => {
+            printWindow.focus();
+            printWindow.print();
+          });
+        }
+      });
+    } else {
+      worker.save(`invoice_${Date.now()}.pdf`);
+    }
 
-  // 🔄 Step 4: Generate PDF
-  const options = {
-    margin: 0.2,
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  };
+    // ✅ Step 5: Restore everything after export
+    worker.then(() => {
+      hiddenElements.forEach(({ el, display }) => {
+        el.style.display = display || '';
+      });
 
-  const worker = html2pdf().set(options).from(element).toPdf();
+      containerEls.forEach((el, index) => {
+        el.style.opacity = originalOpacities[index] || '';
+      });
 
-  if (mode === "print") {
-    worker.outputPdf('bloburl').then((blobUrl) => {
-      const printWindow = window.open(blobUrl);
-      if (printWindow) {
-        printWindow.addEventListener('load', () => {
-          printWindow.focus();
-          printWindow.print();
-        });
+      if (billTo && originalTextareaStyle) {
+        Object.assign(billTo.style, originalTextareaStyle);
+      }
+    }).catch(() => {
+      alert("PDF export failed.");
+
+      hiddenElements.forEach(({ el, display }) => {
+        el.style.display = display || '';
+      });
+
+      containerEls.forEach((el, index) => {
+        el.style.opacity = originalOpacities[index] || '';
+      });
+
+      if (billTo && originalTextareaStyle) {
+        Object.assign(billTo.style, originalTextareaStyle);
       }
     });
-  } else {
-    worker.save(`invoice_${Date.now()}.pdf`);
   }
-
-  // ✅ Step 5: Restore everything after export
-  worker.then(() => {
-    hiddenElements.forEach(({ el, display }) => {
-      el.style.display = display || '';
-    });
-
-    containerEls.forEach((el, index) => {
-      el.style.opacity = originalOpacities[index] || '';
-    });
-
-    if (billTo && originalTextareaStyle) {
-      Object.assign(billTo.style, originalTextareaStyle);
-    }
-  }).catch(() => {
-    alert("PDF export failed.");
-
-    hiddenElements.forEach(({ el, display }) => {
-      el.style.display = display || '';
-    });
-
-    containerEls.forEach((el, index) => {
-      el.style.opacity = originalOpacities[index] || '';
-    });
-
-    if (billTo && originalTextareaStyle) {
-      Object.assign(billTo.style, originalTextareaStyle);
-    }
-  });
-}
 
 
   const updateInvoice = () => {
@@ -276,7 +276,7 @@ function downloadPDF(mode = "download") {
       battery_warranty_months: document.getElementById('battery_warranty_months').value
     };
 
-   // fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
+    // fetch("https://script.google.com/macros/s/AKfycbzACOJbNcT-ufvTUkVqpP2MSBysTI1csreBZPDaPJG-UpBteXQ25eePxvB35UE7xu_aUg/exec", {
 
     fetch("https://script.google.com/macros/s/AKfycbzokwoC8MZSERYjvvje9gzQptZ52Nka7Fj1DdK581cUEixhrGMoYpNla9PWJh-ikpFa4g/exec", {
       method: "POST",
@@ -340,97 +340,97 @@ function downloadPDF(mode = "download") {
   // }
 
   //modified incrementInvoiceNumber to handle different formats start
- 
 
-// function incrementInvoiceNumber(invoice) {
-//   //invoice="ED/2026/009"; // for testing
-//   const PREFIX = "ED";
-//   const currentYear = new Date().getFullYear();
 
-//   // No previous invoice
-//   if (!invoice || typeof invoice !== "string") {
-//     return `${PREFIX}/${currentYear}/001`;
-//   }
+  // function incrementInvoiceNumber(invoice) {
+  //   //invoice="ED/2026/009"; // for testing
+  //   const PREFIX = "ED";
+  //   const currentYear = new Date().getFullYear();
 
-//   // Expected format: ED/YYYY/NNN
-//   const match = invoice.match(/^([A-Z]+)\/(\d{4})\/(\d+)$/);
+  //   // No previous invoice
+  //   if (!invoice || typeof invoice !== "string") {
+  //     return `${PREFIX}/${currentYear}/001`;
+  //   }
 
-//   // Invalid format → reset safely
-//   if (!match) {
-//     return `${PREFIX}/${currentYear}/001`;
-//   }
+  //   // Expected format: ED/YYYY/NNN
+  //   const match = invoice.match(/^([A-Z]+)\/(\d{4})\/(\d+)$/);
 
-//   const lastYear = parseInt(match[2], 10);
-//   const lastNumberStr = match[3];
-//   const lastNumber = parseInt(lastNumberStr, 10);
+  //   // Invalid format → reset safely
+  //   if (!match) {
+  //     return `${PREFIX}/${currentYear}/001`;
+  //   }
 
-//   // Same year → increment
-//   if (lastYear === currentYear) {
-//     return `${PREFIX}/${currentYear}/${String(lastNumber + 1).padStart(
-//       lastNumberStr.length,
-//       "0"
-//     )}`;
-//   }
+  //   const lastYear = parseInt(match[2], 10);
+  //   const lastNumberStr = match[3];
+  //   const lastNumber = parseInt(lastNumberStr, 10);
 
-//   // Year changed → reset
-//   return `${PREFIX}/${currentYear}/001`;
-// }
+  //   // Same year → increment
+  //   if (lastYear === currentYear) {
+  //     return `${PREFIX}/${currentYear}/${String(lastNumber + 1).padStart(
+  //       lastNumberStr.length,
+  //       "0"
+  //     )}`;
+  //   }
+
+  //   // Year changed → reset
+  //   return `${PREFIX}/${currentYear}/001`;
+  // }
 
   //modified incrementInvoiceNumber to handle different formats end
 
   function incrementInvoiceNumber(lastInvoice, invoiceDate = new Date()) {
-  const PREFIX = "ED";
+    const PREFIX = "ED";
 
-  const year = invoiceDate.getFullYear();
-  const month = invoiceDate.getMonth() + 1; // 1-12
+    const year = invoiceDate.getFullYear();
+    const month = invoiceDate.getMonth() + 1; // 1-12
 
-  // 🔹 Determine Financial Year
-  let startYear, endYear;
-  if (month >= 4) {
-    startYear = year;
-    endYear = year + 1;
-  } else {
-    startYear = year - 1;
-    endYear = year;
-  }
+    // 🔹 Determine Financial Year
+    let startYear, endYear;
+    if (month >= 4) {
+      startYear = year;
+      endYear = year + 1;
+    } else {
+      startYear = year - 1;
+      endYear = year;
+    }
 
-  const fyLabel = `${String(startYear).slice(-2)}-${String(endYear).slice(-2)}`;
+    const fyLabel = `${String(startYear).slice(-2)}-${String(endYear).slice(-2)}`;
 
-  console.log("📅 Invoice Date:", invoiceDate.toDateString());
-  console.log("📆 Financial Year:", fyLabel);
+    console.log("📅 Invoice Date:", invoiceDate.toDateString());
+    console.log("📆 Financial Year:", fyLabel);
 
-  // 🔹 No previous invoice
-  if (!lastInvoice || typeof lastInvoice !== "string") {
-    console.log("🆕 No previous invoice → Reset");
+    // 🔹 No previous invoice
+    if (!lastInvoice || typeof lastInvoice !== "string") {
+      console.log("🆕 No previous invoice → Reset");
+      return `${PREFIX}/${fyLabel}/001`;
+    }
+
+    // 🔹 Expected format: ED/25-26/009
+    const match = lastInvoice.match(/^([A-Z]+)\/(\d{2}-\d{2})\/(\d+)$/);
+
+    if (!match) {
+      console.warn("⚠️ Invalid invoice format → Reset");
+      return `${PREFIX}/${fyLabel}/001`;
+    }
+
+    const lastFY = match[2];
+    const lastNumberStr = match[3];
+    const lastNumber = parseInt(lastNumberStr, 10);
+
+    console.log("🧾 Last Invoice:", lastInvoice);
+    console.log("🕰 Last FY:", lastFY);
+
+    // 🔹 Same financial year → increment
+    if (lastFY === fyLabel) {
+      const nextNumber = String(lastNumber + 1).padStart(lastNumberStr.length, "0");
+      console.log("➕ Same FY → Increment:", nextNumber);
+      return `${PREFIX}/${fyLabel}/${nextNumber}`;
+    }
+
+    // 🔹 New financial year → reset
+    console.log("🔄 New FY → Reset to 001");
     return `${PREFIX}/${fyLabel}/001`;
   }
-
-  // 🔹 Expected format: ED/25-26/009
-  const match = lastInvoice.match(/^([A-Z]+)\/(\d{2}-\d{2})\/(\d+)$/);
-
-  if (!match) {
-    console.warn("⚠️ Invalid invoice format → Reset");
-    return `${PREFIX}/${fyLabel}/001`;
-  }
-
-  const lastFY = match[2];
-  const lastNumberStr = match[3];
-  const lastNumber = parseInt(lastNumberStr, 10);
-
-  console.log("🧾 Last Invoice:", lastInvoice);
-  console.log("🕰 Last FY:", lastFY);
-
-  // 🔹 Same financial year → increment
-  if (lastFY === fyLabel) {
-    const nextNumber = String(lastNumber + 1).padStart(lastNumberStr.length, "0");
-    console.log("➕ Same FY → Increment:", nextNumber);
-    return `${PREFIX}/${fyLabel}/${nextNumber}`;
-  }
-
-  // 🔹 New financial year → reset
-  console.log("🔄 New FY → Reset to 001");
-  return `${PREFIX}/${fyLabel}/001`;
-}
 
   // const fetchLatestInvoiceNumber = () => {
   //   const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
@@ -461,7 +461,7 @@ function downloadPDF(mode = "download") {
   //     });
 
   // };
-   // ✅ wrap function to satisfy useEffect dependency rule
+  // ✅ wrap function to satisfy useEffect dependency rule
   const fetchLatestInvoiceNumber = useCallback(() => {
     // your existing logic here
     console.log("Fetching latest invoice number");
@@ -493,7 +493,7 @@ function downloadPDF(mode = "download") {
         console.error("Error fetching invoice:", err.message);
       });
 
- 
+
 
 
   }, []);
@@ -506,17 +506,17 @@ function downloadPDF(mode = "download") {
     const {
       billTo, billMobile, billPanNo, billEmail, billAadhar, BatteryNo, ChassisNo,
       Gst, MotorNo, amount, hsn, invoiceDate, modelNo, ControllerNo, qty, rate,
-      tax, receivedAmount, balanceAmount ,batterymonth
+      tax, receivedAmount, balanceAmount, batterymonth
     } = data;
 
 
     const set = (id, val) => {
       const el = document.getElementById(id);
       if (action === "inner") {
-        console.log("in inner "+el +" val "+val);
+        console.log("in inner " + el + " val " + val);
         if (el) el.innerHTML = val || '';
       } else {
-        console.log("in else" +el +" val "+val);
+        console.log("in else" + el + " val " + val);
         if (el) el.value = val || '';
       }
     };
@@ -530,7 +530,7 @@ function downloadPDF(mode = "download") {
 
     // console.log("after convertion invoiceFormattedDate "+invoiceFormattedDate);
 
-    
+
 
 
     set('invoiceDate', invoiceFormattedDate);
@@ -597,7 +597,7 @@ function downloadPDF(mode = "download") {
         if (data.success) {
           fetchedInvoiceData = data.data;  // ✅ Store in global object
           document.getElementById("invoiceNumber").value = fetchedInvoiceData.invoiceNumber;
-          console.log(" get data : "+fetchedInvoiceData.invoiceDate);
+          console.log(" get data : " + fetchedInvoiceData.invoiceDate);
           populateFormFields(fetchedInvoiceData, "value"); // ✅ Reuse mapping function
           setShowControls(true); // If you're using this in React
         } else {
@@ -643,7 +643,7 @@ function downloadPDF(mode = "download") {
     window.location.reload(); // Reset everything
   };
 
-  
+
   function printPage() {
     // Temporarily adjust the textarea style before printing
     const billTo = document.getElementById('bill-to-address');
@@ -669,9 +669,9 @@ function downloadPDF(mode = "download") {
   }
 
 
- useEffect(() => {
-  console.log("in useeffect");
-  document.getElementById("invoiceDate").value =
+  useEffect(() => {
+    console.log("in useeffect");
+    document.getElementById("invoiceDate").value =
       new Date().toISOString().split("T")[0];
     monitorInternetConnection();
     fetchLatestInvoiceNumber();
@@ -722,7 +722,7 @@ function downloadPDF(mode = "download") {
       };
     }
 
-    
+
 
   }, [fetchLatestInvoiceNumber]);
 
@@ -776,7 +776,7 @@ function downloadPDF(mode = "download") {
   return (
     <div style={{ maxWidth: '800px' }}>
       <div className="button-group">
-        <button id="saveBtn"  disabled={!isSaveEnabled} >Save</button>
+        <button id="saveBtn" disabled={!isSaveEnabled} >Save</button>
         <button class="no-print" onClick={printPage}>Print</button>
 
         <button onClick={downloadPDF}>Download Pdf</button>
@@ -916,7 +916,7 @@ function downloadPDF(mode = "download") {
 
       {/* Bill To Info */}
       <div className="container" style={{
-        
+
         pointerEvents: isEditable ? 'auto' : 'none',
         opacity: isEditable ? 1 : 0.6,
         border: '1px solid #ccc',
@@ -929,12 +929,12 @@ function downloadPDF(mode = "download") {
             {/* <textarea id="bill-to-address1"  style={{ width: "100%" }}  onChange={handleBillAddressChange}></textarea> */}
             {/* <textarea id="bill-to-address" style={{ width: "100%" }} value={billAddress} onChange={handleBillAddressChange} ></textarea> */}
 
-              <textarea
-        id="bill-to-address"
-        style={{ width: "100%" }}
-         value={billAddress}
-        onChange={handleBillAddressChange}
-      ></textarea>
+            <textarea
+              id="bill-to-address"
+              style={{ width: "100%" }}
+              value={billAddress}
+              onChange={handleBillAddressChange}
+            ></textarea>
 
 
           </div>
@@ -979,45 +979,55 @@ function downloadPDF(mode = "download") {
         <label id="inWords" style={{ flex: 1, display: "flex", alignItems: "center" }}></label>
       </p>
 
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <strong>Bank Details</strong><br />
-              Name: ELECTRIC DRIVE<br />
-              IFSC Code: CBIN0284033<br />
-              Account No: 5800208027<br />
-              Bank: Central Bank of India, Kisan College BRANCH
-            </td>
-            <td style={{ width: "213px" }}>
-              {/* <strong>Payment QR Code</strong><br />
-              UPI ID: kumarvishvishal23@ybl<br />
-              <img src="qr_placeholder.png" width="100" alt="QR Code" /> */}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
 
       <table width="100%" cellPadding="10" style={{ borderCollapse: "collapse" }}>
         <tbody>
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>
-              <strong>Terms and Conditions:</strong><br />
-              1. Moter, Charger, Controller - One year Warranty, Battery –<input id="battery_warranty_months" type="number" defaultValue={12} style={{ width: '25px' }} />Months Warranty. The responsibility of the warranty will be of the Company.<br />
-              2. Goods once sold will not be taken back or exchanged.<br />
-              3. All legal dispute shall not lie with Seller, Subject to Company jurisdiction only.<br />
-              4. Home service is not available.
+              <div style={{ fontSize: "10px", verticalAlign: "top", textAlign: "left" }}>
+                <strong>नियम और शर्तें :</strong><br />
+                1. मोटर, चार्जर, कंट्रोलर – एक वर्ष की वारंटी, बैटरी –
+                <input
+                  id="battery_warranty_months"
+                  type="number"
+                  defaultValue={12}
+                  style={{ width: "25px" }}
+                />
+                माह की वारंटी। वारंटी की जिम्मेदारी कंपनी की होगी।<br />
+                2. एक बार बेचे गए सामान को वापस नहीं लिया जाएगा और न ही बदला जाएगा।<br />
+                3. सभी कानूनी विवाद विक्रेता पर लागू नहीं होंगे, वे केवल कंपनी के अधिकार क्षेत्र में होंगे।<br />
+                4. होम सर्विस उपलब्ध नहीं है।<br />
+                5. आकस्मिक घटनाओं (जैसे आग, दुर्घटना आदि) की स्थिति में गाड़ी का बीमा करवाना अनिवार्य है और ऐसी परिस्थितियों में विक्रेता/कंपनी जिम्मेदार नहीं होगी।<br />
+                6. गाड़ी की सर्विसिंग समयानुसार करवाना आवश्यक है, अन्यथा यदि निर्धारित समय पर सर्विसिंग नहीं कराई जाती है तो कंपनी स्वतः ही वारंटी समाप्त कर देगी।
+              </div>
 
             </td>
-            <td style={{ verticalAlign: "bottom", textAlign: "center", height: "100px",width: "213px" }}>
-              <p style={{ margin: 0 }}>
-                Authorised Signatory<br />
-                <strong>ELECTRIC DRIVE</strong>
-              </p>
-            </td>
+            
           </tr>
         </tbody>
       </table>
+
+     
+      <div style={{ display: "flex", marginTop: "40px", justifyContent: "space-between", padding: "20px", fontFamily: "Arial, sans-serif", fontSize: "10px" }}>
+  
+  {/* Left Content */}
+  <div style={{ width: "45%",  padding: "10px" }}>
+    <h3 style={{ color: "#333" }}>Customer Signature</h3>
+    
+  </div>
+
+  {/* Right Content */}
+  <div style={{ width: "20%", backgroundColor: "#f9f9f9", padding: "10px" }}>
+   <h3 >
+                Authorised Signatory<br />
+                <strong>ELECTRIC DRIVE</strong>
+              </h3>
+   
+  </div>
+
+</div>
+
 
       <div id="toast" style={{ display: "none" }}></div>
     </div>
