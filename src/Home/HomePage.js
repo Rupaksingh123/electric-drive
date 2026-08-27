@@ -981,7 +981,7 @@ const HomePage = () => {
 
 
 
-      <table width="100%" cellPadding="10" style={{ borderCollapse: "collapse",marginTop: "0px" }}>
+      <table width="100%" cellPadding="10" style={{ borderCollapse: "collapse" }}>
         <tbody>
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>
