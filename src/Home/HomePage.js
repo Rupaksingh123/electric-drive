@@ -963,7 +963,7 @@ const HomePage = () => {
       </div>
 
       <div id="details" className="container" style={{
-        marginTop: '20px',
+        marginTop: '0px',
         pointerEvents: isEditable ? 'auto' : 'none',
         opacity: isEditable ? 1 : 0.6,
         border: '1px solid #ccc',
@@ -981,7 +981,7 @@ const HomePage = () => {
 
 
 
-      <table width="100%" cellPadding="10" style={{ borderCollapse: "collapse" }}>
+      <table width="100%" cellPadding="10" style={{ borderCollapse: "collapse",marginTop: "0px" }}>
         <tbody>
           <tr>
             <td style={{ verticalAlign: "top", textAlign: "left" }}>

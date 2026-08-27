@@ -112,7 +112,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
 
   return (
     <div>
-      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse',marginTop: '0px' }}>
         <thead>
           <tr>
             <th>#</th>
@@ -224,7 +224,7 @@ const c_s_gst = (initialData.tax / 2).toFixed(2);
 
       <br />
 
-      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse',marginTop: '0px' }}>
         <thead>
           <tr>
             <th rowSpan="2">HSN/SAC</th>

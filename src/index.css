@@ -12,6 +12,7 @@ code {
     monospace;
 } */
 
+
 body {
   font-family: Arial, sans-serif;
   /* width: 210mm; */
@@ -29,7 +30,7 @@ table {
 
 th,
 td {
-  border: 1px solid #000;
+  border: 0.5px solid #ccc;
   padding: 6px;
   font-size: 14px;
 }
@@ -224,9 +225,9 @@ new css */
   /* The container takes full width of its parent */
   max-width: 800px;
   /* Optional: Set a max-width for better readability on large screens */
-  margin: 10px auto;
+  margin: 7px auto;
   /* Center the container on the page */
-  border: 2px solid #333;
+  border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
   /* Ensures rounded corners apply to children */
@@ -235,7 +236,7 @@ new css */
 /* Child div 1 (60% width) */
 .left-div {
   flex: 4;
-  background-color: #e0f7fa;
+  /* background-color: #e0f7fa; */
   padding: 10px;
   box-sizing: border-box;
   border-right: 1px solid #ccc;
@@ -244,7 +245,7 @@ new css */
 /* Child div 2 (40% width) */
 .right-div {
   flex: 2;
-  background-color: #fff3e0;
+  /* background-color: #fff3e0; */
   /* Light orange */
   padding: 10px;
   box-sizing: border-box;
